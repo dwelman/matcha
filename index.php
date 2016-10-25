@@ -19,8 +19,8 @@
               				<nav>
                 				<ul class="nav masthead-nav">
                   					<li class="active"><a href="#">Home</a></li>
-                  					<li><a href="#">Features</a></li>
-                  					<li><a href="#">Contact</a></li>
+                  					<li><a href="register.php">Register</a></li>
+                  					<li><a href="login.php">Login</a></li>
                 				</ul>
               				</nav>
             			</div>
@@ -30,7 +30,7 @@
             			<h1 class="cover-heading">Come meet your match</h1>
             				<p class="lead">Matcha is a dating site like no other, come and meet your soulmate today</p>
             				<p class="lead">
-              					<a href="#" class="btn btn-lg btn-default">Learn more</a>
+              					<a href="#" class="btn btn-lg btn-default">Register Now</a>
             				</p>
           			</div>
 
