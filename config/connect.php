@@ -13,7 +13,6 @@
 			print "Error: " . $e->getMessage();
 			die();
 		}
-	//	print "Connected to database successfully\n";
 		return ($pdo);
 	}
 ?>
