@@ -18,6 +18,7 @@
 		name VARCHAR( 24 ) NOT NULL,
 		surname VARCHAR ( 24 ) NOT NULL,
 		gender ENUM( 'M', 'F' ) NOT NULL,
+		bio VARCHAR( 500 ),
 		preference ENUM ( 'M', 'F', 'B' ) NOT NULL DEFAULT 'B',
 		date_created TIMESTAMP NOT NULL,
 		fame INT NOT NULL DEFAULT 0

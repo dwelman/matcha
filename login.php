@@ -5,7 +5,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link href="css/bootstrap.min.css" rel="stylesheet">
-		<link href="css/style.css" rel="stylesheet">
+		<link href="css/loginForm.css" rel="stylesheet">
 		<script src="js/jquery.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 	</head>
@@ -35,6 +35,12 @@
 								</p>
 						</div>
 -->
+						<h1>Welcome Back!</h1>
+							<form name="loginForm" id="loginForm" method="POST" action="src/loginUser.php">
+							<input id="username" name="username" type="text" placeholder="Username" required><br>
+							<input id="password" name="password" type="password" placeholder="Password" required><br>
+							<input type="submit" name="submit" value="Login">
+							</form>
 						<div class="mastfoot">
 							<div class="inner">
 								<p>Matcha by daviwel and ddu-toit 2016</p>

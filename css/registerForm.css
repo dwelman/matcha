@@ -40,7 +40,7 @@ body {
   width: 100%;
   height: 100%; /* For at least Firefox */
   min-height: 100%;
-  background-image: url("../site_images/landing.jpg");
+  background-image: url("../site_images/register.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   -webkit-box-shadow: inset 0 0 100px rgba(0,0,0,.5);
@@ -130,7 +130,9 @@ body {
   color: rgba(255,255,255,.5);
 }
 
-
+input{
+	color: black;
+}
 /*
  * Affix and center
  */

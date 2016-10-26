@@ -5,7 +5,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link href="css/bootstrap.min.css" rel="stylesheet">
-		<link href="css/style.css" rel="stylesheet">
+		<link href="css/registerForm.css" rel="stylesheet">
 		<script src="js/jquery.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 	</head>
@@ -35,13 +35,13 @@
 								</p>
 						</div>
 -->
-							<h1 class="cover-heading">Register Today</h1>
-								<form name="registerForm" id="registerForm" method="POST">
-								<input id="username" name="username" type="text" placeholder="Username" required><br>
+							<h1>Register Today</h1>
+								<form name="registerForm" id="registerForm" method="POST" action="src/registerUser.php">
+								<input class="input_box" id="username" name="username" type="text" placeholder="Username" required><br>
 								<input id="name" name="name" type="text" placeholder="First name" required><br>
 								<input id="surname" name="surname" type="text" placeholder="Last name" required><br>
-								<input id="password" name="password" type="text" placeholder="Password" required><br>
-								<input id="confpsw" name="confpsw" type="text" placeholder="Confirm password" required><br>
+								<input id="password" name="password" type="password" placeholder="Password" required><br>
+								<input id="confpsw" name="confpsw" type="password" placeholder="Confirm password" required><br>
 								<input id="email" name="email" type="text" placeholder="Email address" required><br>
 								<label>And I am a</label><br>
 								<input id="gender" name="gender" type="radio" value="M">Man
@@ -49,7 +49,8 @@
 								<label>Looking for a</lbale><br>
 								<input id="preference" name="preference" type="radio" value="M">Man
 								<input id="preference" name="preference" type="radio" value="F">Woman
-								<input id="preference" name="preference" type="radio" value="B">Either
+								<input id="preference" name="preference" type="radio" value="B">Either<br>
+								<input type="submit" name="submit" value="Register">
 								</form>
 						<div class="mastfoot">
 							<div class="inner">
