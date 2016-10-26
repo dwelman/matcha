@@ -11,13 +11,13 @@
 		$stmt->execute();
 		if ($stmt->rowCount() != 1)
 		{
-			header("Location: ../login.php?error=1");
+			header("Location: ../index.php?error=1");
 			return ;
 		}
 		$row = $stmt->fetch(PDO::FETCH_ASSOC);
 		if (hash("whirlpool", $_POST["password"]) != $row["password"])
 		{
-			header("Location: ../login.php?error=1");
+			header("Location: ../index.php?error=1");
 			return ;
 		}
 		$_SESSION["logged_on_user"] = $row["username"];

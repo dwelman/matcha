@@ -106,7 +106,13 @@ body {
   }
 }
 
+input {
+  color: black;
+}
 
+.loginHead {
+  color: #4f4647;
+}
 /*
  * Cover
  */
