@@ -13,8 +13,13 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	</head>
 	<body>
+	<?php
+		session_start();
+		if ($_SESSION['logged_on_user'] == "")
+			header("Location : index.php");
+	?>
 	<div class="container" style="padding-top: 60px;">
-		<h1 class="page-header">Edit Profile</h1>
+		<h1 class="page-header">Edit Profile ~ <?php echo $_SESSION['logged_on_user'];?></h1>
 		<div id="row" class="row">
 			<!-- left column -->
 			<div class="col-md-4 col-sm-6 col-xs-12">
@@ -44,6 +49,7 @@
 							<img src="http://lorempixel.com/200/200/people/2/" alt="">
 						</a>
 					</div>
+
 				</div>
 			</div>
 			<!-- edit form column -->
@@ -54,39 +60,24 @@
 					<div class="form-group">
 						<label class="col-lg-3 control-label">First name</label>
 						<div class="col-lg-8">
-							<input class="form-control" value="Dean" type="text" id="firstname" onfocus="">
+							<input class="form-control" value="" type="text" id="firstname" onfocus="" maxlength="24">
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-3 control-label">Last name</label>
 						<div class="col-lg-8">
-							<input class="form-control" value="derp" type="text" id="lastname">
+							<input class="form-control" value="" type="text" id="lastname" maxlength="24">
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-3 control-label">Email</label>
 						<div class="col-lg-8">
-							<input class="form-control" value="ex@email.com" type="text" placeholder="example@email.com" id="email">
+							<input class="form-control" value="ex@email.com" type="text" placeholder="example@email.com" id="email" maxlength="128">
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label class="col-md-3 control-label">Old Password</label>
-						<div class="col-md-8">
-							<input class="form-control" value="" type="password">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-md-3 control-label">New password</label>
-						<div class="col-md-8">
-							<input class="form-control" value="" type="password">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-md-3 control-label">Confirm new password</label>
-						<div class="col-md-8">
-							<input class="form-control" value="" type="password">
-						</div>
+						<a class="cpass" href="#" data-toggle="modal" data-target="#login-modal">Change Password</a>
 					</div>
 					<h3>Profile Info</h3>
 					<div class="form-group">
@@ -94,12 +85,12 @@
 						<div class="col-lg-8">
 							<div class="funkyradio">
 								<div class="funkyradio-primary">
-									<input type="radio" name="radio" id="radio1"/>
-									<label for="radio1">Male</label>
+									<input type="radio" name="radio" id="genmale"/>
+									<label for="genmale">Male</label>
 								</div>
 								<div class="funkyradio-primary">
-									<input type="radio" name="radio" id="radio2"/>
-									<label for="radio2">Female</label>
+									<input type="radio" name="radio" id="genfem"/>
+									<label for="genfem">Female</label>
 								</div>
 							</div>
 						</div>
@@ -109,12 +100,12 @@
 						<div class="col-lg-8">
 							<div class="funkyradio">
 								<div class="funkyradio-primary">
-									<input type="checkbox" name="checkbox" id="checkbox1" checked/>
-									<label for="checkbox1">Male</label>
+									<input type="checkbox" name="checkbox" id="prefm"/>
+									<label for="prefm">Male</label>
 								</div>
 								<div class="funkyradio-primary">
-									<input type="checkbox" name="checkbox" id="checkbox2" checked/>
-									<label for="checkbox2">Female</label>
+									<input type="checkbox" name="checkbox" id="preffem"/>
+									<label for="preffem">Female</label>
 								</div>
 							</div>
 						</div>
@@ -123,7 +114,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Bio</label>
 						<div class="col-md-8">
-							<textarea class="form-control" rows="3" placeholder="Tell people about you" maxlength="255"></textarea>
+							<textarea class="form-control" rows="3" placeholder="Tell people about you" maxlength="255" id="bio"></textarea>
 						</div>
 					</div>
 					<div class="form-group">
@@ -139,24 +130,21 @@
 			</div>
 		</div>
 	</div>
-	<a href="#" data-toggle="modal" data-target="#login-modal">Login</a>
 
 	<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 		<div class="modal-dialog">
 			<div class="loginmodal-container">
-				<h1>Login to Your Account</h1><br>
+				<h1>Change Password</h1><br>
 				<form>
-					<input type="text" name="user" placeholder="Username">
-					<input type="password" name="pass" placeholder="Password">
-					<input type="submit" name="login" class="login loginmodal-submit" value="Login">
+					<input class="passfield" type="password" name="oldpass" placeholder="old password">
+					<input class="passfield" type="password" name="newpass" placeholder="new password">
+					<input class="passfield" type="password" name="confnewpass" placeholder="confirm new password">
+					<input  type="submit" name="login" class="login loginmodal-submit" value="Change">
 				</form>
-
-				<div class="login-help">
-					<a href="#">Register</a> - <a href="#">Forgot Password</a>
-				</div>
 			</div>
 		</div>
 	</div>
 	</body>
 	<script type="text/javascript" src="js/profileCheck.js"></script>
+	<script type="text/javascript" src="js/getUserData.js"></script>
 </html>
