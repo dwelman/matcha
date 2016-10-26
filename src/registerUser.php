@@ -8,12 +8,12 @@
 			header("Location: ../register.php?error=1");
 			return ;
 		}
-		if (!preg_match('/^[A-Za-z -]+$/', $_POST["name"]) || !(strlen($_POST["name"]) <= 24))
+		if (!preg_match('/^[A-Za-z -]+$/', trim($_POST["name"])) || !(strlen(trim($_POST["name"])) <= 24))
 		{
 			header("Location: ../register.php?error=6");
 			return ;
 		}
-		if (!preg_match('/^[A-Za-z -]+$/', $_POST["surname"]) || !(strlen($_POST["surname"]) <= 24))
+		if (!preg_match('/^[A-Za-z -]+$/', trim($_POST["surname"])) || !(strlen(trim($_POST["surname"])) <= 24))
 		{
 			header("Location: ../register.php?error=6");
 			return ;

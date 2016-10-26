@@ -69,10 +69,6 @@
 					<input type="text" name="email" placeholder="Email Address">
 					<input type="submit" name="submit" class="login loginmodal-submit" value="Send">
 				</form>
-	
-				<div class="login-help">
-					<a href="register.php">Register</a> - <a href="#" data-toggle="modal" data-target="#login-modal">Forgot Password</a>
-				</div>
 			</div>
 		</div>
 	</div>
