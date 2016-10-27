@@ -23,7 +23,11 @@
     $_POST['bio'] = htmlspecialchars($_POST['bio']);
     $pdo = connect();
     $sql = $pdo->query("USE db_matcha");
-    $stmt = $pdo->prepare("UPDATE `users` SET `bio` = :bio, `gender` = :gender, `preference` = :pref, `name` = :name, `surname` = :surname, `email` = :email");
+    $stmt = $pdo->prepare("UPDATE `users` SET `bio` = :bio, `gender` = :gender, `preference` = :pref, 
+                            `name` = :name, `surname` = :surname, `email` = :email
+                            WHERE username = :username");
+    session_start();
+    $stmt->bindParam(':username', $_SESSION['logged_on_user']);
     $stmt->bindParam(':bio', $_POST['bio']);
     $stmt->bindParam(':gender', $_POST['gender']);
     $stmt->bindParam(':pref', $_POST['preference']);
