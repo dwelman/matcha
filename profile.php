@@ -48,7 +48,7 @@
 		<div class="col-md-8 col-sm-6 col-xs-12 personal-info">
 
 			<form class="form-horizontal" role="form">
-				<h3>Profile Info</h3>
+				<h3>Profile Info</h3><br>
 				<div class="form-group">
 					<label class="col-lg-3 control-label">Gender</label>
 					<div class="col-lg-8">

@@ -20,6 +20,7 @@
 	?>
 	<div class="container" style="padding-top: 60px;">
 		<h1 class="page-header">Edit Profile ~ <?php echo $_SESSION['logged_on_user'];?></h1>
+
 		<div id="row" class="row">
 			<!-- left column -->
 			<div class="col-md-4 col-sm-6 col-xs-12">

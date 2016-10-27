@@ -1,4 +1,5 @@
 <?php
+    include "../config/connect.php";
 
     $name = $_POST['name'];
     $surname = $_POST['surname'];
@@ -13,10 +14,20 @@
     if (!preg_match('/^[A-Za-z -]+$/', trim($_POST["name"])) || !(strlen(trim($_POST["name"])) <= 24))
         die("ERROR : Invalid name");
 
+    if (!preg_match('/^[A-Za-z -]+$/', trim($_POST["surname"])) || !(strlen(trim($_POST["surname"])) <= 24))
+        die("ERROR : Invalid surname");
+
     if (!preg_match('/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/', $_POST["email"]))
-        die("ERROR : Invalid name");
+        die("ERROR : Invalid email");
 
-    $_POST['bio'] = preg_replace("/>/", "&lt;", $_POST['bio']);
-    $_POST['bio'] = preg_replace("/</", "&gt;", $_POST['bio']);
-
-    file_put_contents("log.txt", $_POST['bio']);
+    $_POST['bio'] = htmlspecialchars($_POST['bio']);
+    $pdo = connect();
+    $sql = $pdo->query("USE db_matcha");
+    $stmt = $pdo->prepare("UPDATE `users` SET `bio` = :bio, `gender` = :gender, `preference` = :pref, `name` = :name, `surname` = :surname, `email` = :email");
+    $stmt->bindParam(':bio', $_POST['bio']);
+    $stmt->bindParam(':gender', $_POST['gender']);
+    $stmt->bindParam(':pref', $_POST['preference']);
+    $stmt->bindParam(':name', $_POST['name']);
+    $stmt->bindParam(':surname', $_POST['surname']);
+    $stmt->bindParam(':email', $_POST['email']);
+    $stmt->execute();

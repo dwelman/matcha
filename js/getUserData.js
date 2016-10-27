@@ -73,10 +73,9 @@ function updateProfile()
         type: 'post',
         success: function(data)
         {
-            alert(data);
+            getUserData();
         }
     });
-    getUserData();
 }
 
 
