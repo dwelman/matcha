@@ -27,7 +27,10 @@
 				<div class="text-center">
 					<img src="site_images/ppic.jpg" class="avatar img-circle img-thumbnail" alt="avatar">
 					<h6>Upload a photo...</h6>
-					<input type="file" class="text-center center-block well well-sm">
+					<form>
+						<input type="file" class="text-center center-block well well-sm">
+
+					</form>
 				</div>
 				<div class="row">
 					<div class="col-xs-6 col-md-3">
