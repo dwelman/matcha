@@ -8,6 +8,7 @@
 		<link href="css/style.css" rel="stylesheet">
 		<link href="css/funkyradio.css" rel="stylesheet">
 		<link href="css/modalLogin.css" rel="stylesheet">
+		<link href="css/cardStyle.css" rel="stylesheet">
 		<script src="js/jquery.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -18,6 +19,28 @@
 		if ($_SESSION['logged_on_user'] == "")
 			header("Location : index.php");
 	?>
+	 <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="navbar-brand">Matcha</div>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="memberLanding.php">Home</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+			<li><a href="index.php">Logout</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
 	<div class="container" style="padding-top: 60px;">
 		<h1 class="page-header">Edit Profile ~ <?php echo $_SESSION['logged_on_user'];?></h1>
 

@@ -7,6 +7,7 @@
 		<link href="css/bootstrap.min.css" rel="stylesheet">
 		<link href="css/style.css" rel="stylesheet">
 		<link href="css/cardStyle.css" rel="stylesheet">
+		<link href="css/modalLogin.css" rel="stylesheet">
 		<script src="js/jquery.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 	</head>
@@ -37,7 +38,7 @@
             <li><a href="editProfile.php">Profile</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Change Password</a></li>
+            <li><a href="#" data-dismiss="modal" data-toggle="modal" data-target="#change-modal">Change Password</a></li>
 			<li><a href="index.php">Logout</a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -75,7 +76,19 @@
       </div>
     </div> <!-- /container -->
 
-
+	<div class="modal fade" id="change-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog">
+			<div class="loginmodal-container">
+				<h1 class="loginHead">Change Password</h1><br>
+				<form method="POST" action="src/loginUser.php">
+					<input type="password" name="currentpsw" placeholder="Current Password">
+					<input type="password" name="password" placeholder="New Password">
+					<input type="password" name="confpsw" placeholder="Confirm New Password">
+					<input type="submit" name="submit" class="login loginmodal-submit" value="Confirm">
+				</form>
+			</div>
+		</div>
+	</div>
 	<!--
 	<div class="col-lg-6 col-sm-6">
     <div class="card hovercard">

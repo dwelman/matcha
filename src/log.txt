@@ -2,8 +2,8 @@ Array
 (
     [gender] => M
     [preference] => F
-    [name] => David lol
+    [name] => David
     [surname] => Welman
     [email] => dwelman2704@gmail.com
-    [bio] => I have a big
+    [bio] => I have a big... dick :}
 )
