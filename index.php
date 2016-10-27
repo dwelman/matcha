@@ -73,6 +73,7 @@
 					<label>And I am a</label><br>
 					<input name="gender" type="radio" value="M">Man &bull; 
 					<input name="gender" type="radio" value="F">Woman<br>
+					<label>Looking for a</label><br>
 					<input name="preference" type="radio" value="M">Man &bull;  
 					<input name="preference" type="radio" value="F">Woman &bull; 
 					<input name="preference" type="radio" value="B">Either<br>
