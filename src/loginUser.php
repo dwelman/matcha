@@ -23,6 +23,6 @@
 		$_SESSION["logged_on_user"] = $row["username"];
 		$pdo = null;
 	}
-	header("Location: ../index.php");
+	header("Location: ../memberLanding.php");
 	return ;
 ?>

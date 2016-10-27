@@ -40,7 +40,7 @@ body {
   width: 100%;
   height: 100%; /* For at least Firefox */
   min-height: 100%;
-  background-image: url("../site_images/landing.jpg");
+  background-image: url("../site_images/login.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   -webkit-box-shadow: inset 0 0 100px rgba(0,0,0,.5);
@@ -86,9 +86,10 @@ body {
 }
 .masthead-nav > li > a:hover,
 .masthead-nav > li > a:focus {
+  color: white;
   background-color: transparent;
-  border-bottom-color: #a9a9a9;
-  border-bottom-color: rgba(255,255,255,.25);
+  border-bottom-color: white;
+  border-bottom-color: white;
 }
 .masthead-nav > .active > a,
 .masthead-nav > .active > a:hover,
@@ -113,6 +114,21 @@ input {
 .loginHead {
   color: #4f4647;
 }
+
+ul li .check{
+  display: block;
+  position: absolute;
+  border: 5px solid #AAAAAA;
+  border-radius: 100%;
+  height: 25px;
+  width: 25px;
+  top: 30px;
+  left: 20px;
+	z-index: 5;
+	transition: border .25s linear;
+	-webkit-transition: border .25s linear;
+}
+
 /*
  * Cover
  */
