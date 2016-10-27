@@ -11,6 +11,10 @@
 		<script src="js/bootstrap.min.js"></script>
 	</head>
 	<body>
+		<?php
+			session_start();
+			$_SESSION["logged_on_user"] = "";
+		?>
 		<div class="site-wrapper">
 			<div class="site-wrapper-inner">
 				<div class="cover-container">
