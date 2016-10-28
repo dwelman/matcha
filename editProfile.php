@@ -35,6 +35,7 @@
             <li><a href="memberLanding.php">Home</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
+		  	<li><a href="#" data-dismiss="modal" data-toggle="modal" data-target="#change-modal">Change Password</a></li>
 			<li><a href="index.php">Logout</a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -106,10 +107,6 @@
 							<input class="form-control" value="ex@email.com" type="text" placeholder="example@email.com" id="email" maxlength="128">
 						</div>
 					</div>
-
-					<div class="form-group">
-						<a class="cpass" href="#" data-toggle="modal" data-target="#login-modal">Change Password</a>
-					</div>
 					<h3>Profile Info</h3>
 					<div class="form-group">
 						<label class="col-lg-3 control-label">Gender</label>
@@ -163,20 +160,23 @@
 		</div>
 	</div>
 
-	<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+		<div class="modal fade" id="change-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 		<div class="modal-dialog">
 			<div class="loginmodal-container">
-				<h1>Change Password</h1><br>
-				<form>
-					<input class="passfield" type="password" name="oldpass" placeholder="old password">
-					<input class="passfield" type="password" name="newpass" placeholder="new password">
-					<input class="passfield" type="password" name="confnewpass" placeholder="confirm new password">
-					<input  type="submit" name="login" class="login loginmodal-submit" value="Change">
+				<h1 class="loginHead">Change Password</h1><br>
+				<form method="POST" action="src/changeUserPassword.php">
+					<input type="password" name="password" placeholder="New Password">
+					<input type="password" name="confpsw" placeholder="Confirm New Password">
+					<?php
+						session_start();
+						echo '<input type="hidden" name="user" value="' . hash("whirlpool", $_SESSION["logged_on_user"]) . '">';
+					?>
+					<button class="btn btn-lg btn-primary btn-block" name="submit" type="submit" value="submit">Change Password</button>
 				</form>
 			</div>
 		</div>
 	</div>
-	</body>
+
 	<script type="text/javascript" src="js/profileCheck.js"></script>
 	<script type="text/javascript" src="js/getUserData.js"></script>
 	<script type="text/javascript" src="js/upload.js"></script>

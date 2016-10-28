@@ -5,9 +5,9 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/modalLogin.css" rel="stylesheet">
 		<link href="css/style.css" rel="stylesheet">
 		<link href="css/cardStyle.css" rel="stylesheet">
-		<link href="css/modalLogin.css" rel="stylesheet">
 		<script src="js/jquery.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 	</head>
@@ -80,11 +80,14 @@
 		<div class="modal-dialog">
 			<div class="loginmodal-container">
 				<h1 class="loginHead">Change Password</h1><br>
-				<form method="POST" action="src/loginUser.php">
-					<input type="password" name="currentpsw" placeholder="Current Password">
+				<form method="POST" action="src/changeUserPassword.php">
 					<input type="password" name="password" placeholder="New Password">
 					<input type="password" name="confpsw" placeholder="Confirm New Password">
-					<input type="submit" name="submit" class="login loginmodal-submit" value="Confirm">
+					<?php
+						session_start();
+						echo '<input type="hidden" name="user" value="' . hash("whirlpool", $_SESSION["logged_on_user"]) . '">';
+					?>
+					<button class="btn btn-lg btn-primary btn-block" name="submit" type="submit" value="submit">Change Password</button>
 				</form>
 			</div>
 		</div>
@@ -136,6 +139,12 @@
     
     </div>
 	-->
+	<?php
+		$ip = $_SERVER['REMOTE_ADDR'];
+		echo $ip;
+		echo "<br>";
+		echo gethostbyaddr($ip);
+	?>
 
 	</body>
 </html>
