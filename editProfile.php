@@ -9,6 +9,7 @@
 		<link href="css/funkyradio.css" rel="stylesheet">
 		<link href="css/modalLogin.css" rel="stylesheet">
 		<link href="css/cardStyle.css" rel="stylesheet">
+		<link href="css/alert.css" rel="stylesheet">
 		<script src="js/jquery.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -145,6 +146,38 @@
 							<textarea class="form-control" rows="3" placeholder="Tell people about you" maxlength="255" id="bio"></textarea>
 						</div>
 					</div>
+
+					<div class="container">
+					</div>
+					<div class="row">
+						<div class="col-xs-4">
+						<div class="alert alert-info alert-dismissable" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" style="color: white;">×</span></button>
+							<p class="alert-title">Pernus</p>
+						</div>
+						</div>
+						
+						<div class="col-xs-4">
+						<div class="alert alert-info alert-dismissable" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" style="color: white;">×</span></button>
+							<p class="alert-title">Also Pernus</p>
+						</div>
+						</div>
+
+						<div class="col-xs-4">
+						<div class="alert alert-info alert-dismissable" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" style="color: white;">×</span></button>
+							<p class="alert-title">Pernus Indeed</p>
+						</div>
+						</div>
+					</div>
+
+
+					
+						</div>
+					</div>
+				</div>
+
 					<div class="form-group">
 						<label class="col-md-3 control-label"></label>
 						<div class="col-md-8">

@@ -1,0 +1,15 @@
+.alert-info {
+    border-radius: 0;
+	background: #4f4647;
+	border: 0;
+	color: #d8d4d7;
+}
+
+.alert-body {
+	font-size: 15px;
+}
+
+.alert-title {
+	font-size: 15px;
+	font-weight: bold;
+}
