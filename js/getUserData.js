@@ -46,7 +46,6 @@ function updateProfile()
     data = {};
 
     var pref;
-
     if ($("#genmale").prop("checked"))
         data.gender = "M";
     else

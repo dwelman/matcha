@@ -3,7 +3,6 @@
     session_start();
     $user = $_SESSION['logged_on_user'];
 
-    $wd = getcwd();
     if (!function_exists("connect"))
         file_put_contents("log.txt","Cant find connect function, aborting");
     $pdo = connect();

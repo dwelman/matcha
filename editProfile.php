@@ -48,13 +48,17 @@
 			<!-- left column -->
 			<div class="col-md-4 col-sm-6 col-xs-12">
 				<div class="text-center">
-					<img src="site_images/ppic.jpg" class="avatar img-circle img-thumbnail" alt="avatar">
+					<img id="profile_pic" src="site_images/ppic.jpg" class="avatar img-circle img-thumbnail" alt="avatar">
 					<h6>Upload a photo...</h6>
-					<form>
-						<input type="file" class="text-center center-block well well-sm">
-
+					<form id="image_upload_form" enctype="multipart/form-data" method="post">
+						<input type="file" class="text-center center-block well well-sm" id="image1">
+						<input type="button" value="Upload Photo" onclick="userUpload()">
+						<progress id="progressBar" value="0" max="100" style="width:300px;"></progress>
+						<h3 id="status"></h3>
 					</form>
 				</div>
+				<br>
+
 				<div class="row">
 					<div class="col-xs-6 col-md-3">
 						<a href="#" class="thumbnail">
@@ -152,8 +156,9 @@
 							<input class="btn btn-default" value="Cancel" type="reset">
 						</div>
 					</div>
+				</form>
 			</div>
-			</form>
+
 			</div>
 		</div>
 	</div>
@@ -174,4 +179,5 @@
 	</body>
 	<script type="text/javascript" src="js/profileCheck.js"></script>
 	<script type="text/javascript" src="js/getUserData.js"></script>
+	<script type="text/javascript" src="js/upload.js"></script>
 </html>
