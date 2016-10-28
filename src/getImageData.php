@@ -1,5 +1,5 @@
 <?php
-    include "../config/connect.php";
+    include_once "../config/connect.php";
 
     function getImageData($user)
     {
@@ -11,14 +11,15 @@
             die(">>>BREACH<<< : User not logged on!");
         }
         $sql = $pdo->query("USE db_matcha");
-        $stmt = $pdo->prepare("SELECT image_path , is_main FROM images WHERE user = :username");
+        $stmt = $pdo->prepare("SELECT image_path , is_main, image_id FROM images WHERE user = :username");
         $stmt->bindParam(":username", $user);
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode($data);
+        file_put_contents("log.txt", print_r($data, true));
+        return ($data);
     }
-    session_start();
-    $user = $_SESSION['logged_on_user'];
-    $user = "deandt";
-    getImageData($user);
+   // session_start();
+  //  $user = $_SESSION['logged_on_user'];
+   // $user = "deandt";
+  //  getImageData($user);
 ?>

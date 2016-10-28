@@ -1,15 +1,66 @@
+var images;
 
 function getUserData()
 {
     $(document).ready(function()
     {
         // When id with Action is clicked
-            // Load ajax.php as JSON and assign to the data variable
             $.getJSON('src/getUserData.php', function(data)
             {
                 setValues(data[0]);
             });
     });
+}
+
+function getImages()
+{
+    $(document).ready(function()
+    {
+        // When id with Action is clicked
+        $.getJSON('src/imageJson.php', function(data)
+        {
+            console.log(data);
+            setImages(data);
+        });
+    });
+}
+
+function setModal(img)
+{
+    console.log(img);
+
+    $("#modalsrc").attr("src", img);
+}
+
+function setImages(data)
+{
+    console.log("images", data.length);
+    if (data.length >= 5)
+    {
+        $("#img_stat").html("Image limit reached, please delete some to upload again...");
+        $("#image_upload_form").hide();
+    }
+    var i = 0;
+    var imgC = 1;
+    var id;
+    while (i < data.length)
+    {
+        if (data[i].is_main == "Y")
+        {
+            $("#profile_pic").attr("src", data[i].image_path);
+        }
+        else
+        {
+            id = "#img" + imgC.toString();
+            $(id).attr("src", data[i].image_path);
+            console.log("onclick = ","setModal('" + data[i].image_path + "')");
+            _(id).setAttribute("onclick", "setModal('" + data[i].image_path + "')");
+            console.log("id = ", id);
+            imgC++;
+        }
+        i++;
+    }
+    images = data;
 }
 
 function setValues(data)
@@ -39,6 +90,7 @@ function setValues(data)
         $("#prefm").prop("checked", true);
     }
     $("#bio").val(data.bio);
+    getImages();
 }
 
 function updateProfile()
@@ -76,8 +128,4 @@ function updateProfile()
         }
     });
 }
-
-
-getUserData();
-
 

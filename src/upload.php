@@ -1,5 +1,6 @@
 <?php
-include "addImageDb.php";
+include_once "addImageDb.php";
+include_once "getImageData.php";
 
 function getImageName()
 {
@@ -45,7 +46,12 @@ function uploadUserImage($over_id, $user)
 	$user = $_SESSION['logged_on_user'];	
 	if ($user == "")
 		exit;
-	$over = $_POST['overlay'];
+    //$images = getImageData($user);
+    if (count($images) >= 5)
+    {
+        echo "Image limit reached, aborting";
+        exit;
+    }
 	if (file_exists('../images') == false)
 	{
 		echo "Directory not made, creating";

@@ -51,7 +51,7 @@
 			<div class="col-md-4 col-sm-6 col-xs-12">
 				<div class="text-center">
 					<img id="profile_pic" src="site_images/ppic.jpg" class="avatar img-circle img-thumbnail" alt="avatar">
-					<h6>Upload a photo...</h6>
+					<h6 id="img_stat">Upload a photo...</h6>
 					<form id="image_upload_form" enctype="multipart/form-data" method="post">
 						<input type="file" class="text-center center-block well well-sm" id="image1">
 						<input type="button" value="Upload Photo" onclick="userUpload()">
@@ -62,31 +62,40 @@
 				<br>
 
 				<div class="row">
-					<div class="col-xs-6 col-md-3">
-						<a href="#" class="thumbnail">
-							<img src="http://lorempixel.com/200/200/people/8/" alt="">
+					<div class="col-s-6 col-md-3">
+						<a href="#" class="thumbnail" data-toggle="modal" data-target="#modalimg" >
+							<img src="" alt="" id="img1" >
 						</a>
 					</div>
-					<div class="col-xs-6 col-md-3">
-						<a href="#" class="thumbnail">
-							<img src="http://lorempixel.com/200/200/people/5/" alt="">
+					<div class="col-s-6 col-md-3">
+						<a href="#" class="thumbnail" data-toggle="modal" data-target="#modalimg">
+							<img src="" alt="" id="img2">
 						</a>
 					</div>
-					<div class="col-xs-6 col-md-3">
-						<a href="#" class="thumbnail">
-							<img src="http://lorempixel.com/200/200/people/1/" alt="">
+					<div class="col-s-6 col-md-3">
+						<a href="#" class="thumbnail" data-toggle="modal" data-target="#modalimg">
+							<img src="" alt="" id="img3">
 						</a>
 					</div>
-					<div class="col-xs-6 col-md-3">
-						<a href="#" class="thumbnail">
-							<img src="http://lorempixel.com/200/200/people/2/" alt="">
+					<div class="col-s-6 col-md-3">
+						<a href="#" class="thumbnail" data-toggle="modal" data-target="#modalimg">
+							<img src="" alt="" id="img4">
 						</a>
+					</div>
+					<div id="modalimg" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-body">
+									<img id="modalsrc" src="" class="img-responsive">
+								</div>
+							</div>
+						</div>
 					</div>
 
 				</div>
 			</div>
 			<!-- edit form column -->
-			<div id ="personal" class="col-md-8 col-sm-6 col-xs-12 personal-info">
+			<div id="personal" class="col-md-8 col-sm-6 col-xs-12 personal-info">
 
 				<h3 id="pi">Personal info</h3>
 				<form class="form-horizontal" role="form">
@@ -173,7 +182,7 @@
 					</div>
 
 
-					
+
 						</div>
 					</div>
 				</div>
@@ -209,8 +218,11 @@
 			</div>
 		</div>
 	</div>
-
+	</body>
+	<script type="text/javascript" src="js/upload.js"></script>
 	<script type="text/javascript" src="js/profileCheck.js"></script>
 	<script type="text/javascript" src="js/getUserData.js"></script>
-	<script type="text/javascript" src="js/upload.js"></script>
+	<script>
+		getUserData();
+	</script>
 </html>

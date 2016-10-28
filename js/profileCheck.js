@@ -1,17 +1,6 @@
 
 var fieldBorderColor = document.querySelector("#firstname").style.borderColor;
 
-function _(elem)
-{
-    return (document.querySelector(elem));
-}
-
-function  submitRegForm()
-{
-  var form = document.getElementById("regform");
-  form.submit();
-}
-
 function checkName(name, output , message)
 {
     var filter = /^[A-Za-z- ]+$/;
@@ -72,7 +61,7 @@ function verifyDetails(s)
 
 
   function chkPasswordStrength()
-   {
+  {
      var desc = new Array();
      desc[0] = "very weak";
      desc[1] = "weak";
