@@ -71,6 +71,7 @@
 					<input class="input_box" id="username" name="username" type="text" placeholder="Username" required><br>
 					<input name="name" type="text" placeholder="First name" required><br>
 					<input name="surname" type="text" placeholder="Last name" required><br>
+					<input name="age" type="text" placeholder="Age" required><br>
 					<input name="password" type="password" placeholder="Password" required><br>
 					<input name="confpsw" type="password" placeholder="Confirm password" required><br>
 					<input name="email" type="text" placeholder="Email address" required><br>

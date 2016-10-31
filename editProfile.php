@@ -112,6 +112,12 @@
 						</div>
 					</div>
 					<div class="form-group">
+						<label class="col-lg-3 control-label">Age</label>
+						<div class="col-lg-8">
+							<input class="form-control" value="" type="text" id="age" maxlength="24">
+						</div>
+					</div>
+					<div class="form-group">
 						<label class="col-lg-3 control-label">Email</label>
 						<div class="col-lg-8">
 							<input class="form-control" value="ex@email.com" type="text" placeholder="example@email.com" id="email" maxlength="128">
@@ -157,10 +163,16 @@
 					</div>
 
 					<div class="form-group">
+						<div class="col-lg-3">
+						<input class="btn btn-primary" value="Add Interest" type="button" onclick="verifyInterest(10)">
+					</div>
 						<div class="col-lg-8">
-							<a href="#" data-dismiss="modal" data-toggle="modal" data-target="#interest-modal">Add Interest</a>
+							<input class="form-control" value="" type="text" id="interest" onfocus="" maxlength="24">
 						</div>
 					</div>
+
+
+					<br>
 
 
 					<div class="container">
@@ -170,6 +182,10 @@
 							include("config/connect.php");
 							session_start();
 
+							if ($_SESSION["logged_on_user"] == "")
+							{
+								die("ERROR: NOT LOGGED ON");
+							}
 							$pdo = connect();
 							$sql = $pdo->query("USE db_matcha");
 							$stmt = $pdo->prepare("SELECT interest FROM user_interests WHERE user = :name");
@@ -179,13 +195,12 @@
 							{
 								echo '<div class="col-xs-4">';
 								echo '<div class="alert alert-info alert-dismissable" role="alert">';
-								echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" style="color: white;">×</span></button>';
 								echo '<p class="alert-title">' . $row["interest"] . '</p>';
 								echo '</div>';
 								echo '</div>';
 							}
 							$pdo = NULL;
-						?>
+						?>	
 
 						<!--
 						<div class="col-xs-4">
@@ -249,26 +264,12 @@
 		</div>
 	</div>
 
-		<div class="modal fade" id="interest-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-		<div class="modal-dialog">
-			<div class="loginmodal-container">
-				<h1 class="loginHead">Change Password</h1><br>
-				<form method="POST" action="src/addInterest.php">
-					<input type="text" name="interest" placeholder="Add an Interest" value="">
-					<?php
-						//FIX THE CRASH FUTURE ME
-						session_start();
-						echo '<input type="hidden" name="user" value="' . $_SESSION["logged_on_user"] . '">';
-					?>
-					<button class="btn btn-lg btn-primary btn-block" name="submit" type="submit" value="submit">Add Interest</button>
-				</form>
-			</div>
-		</div>
 	</div>
 	</body>
 	<script type="text/javascript" src="js/upload.js"></script>
 	<script type="text/javascript" src="js/profileCheck.js"></script>
 	<script type="text/javascript" src="js/getUserData.js"></script>
+	<script type="text/javascript" src="js/addInterest.js"></script>
 	<script>
 		getUserData();
 	</script>

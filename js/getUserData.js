@@ -90,6 +90,7 @@ function setValues(data)
         $("#prefm").prop("checked", true);
     }
     $("#bio").val(data.bio);
+    $("#age").val(data.age);
     getImages();
 }
 
@@ -116,6 +117,7 @@ function updateProfile()
     data.surname = $("#lastname").val();
     data.email = $("#email").val();
     data.bio = $("#bio").val();
+    data.age = $("#age").val();
 
     console.log(data);
     $.ajax({

@@ -36,6 +36,23 @@ function checkEmail(email, output, message)
     }
 }
 
+function checkAge(age, output, message)
+{
+    var age = document.getElementById('age');
+    if (parseInt(age.value) < 18)
+    {
+        output.innerHTML = message;
+        age.style.borderColor = "#c55";
+        age.focus();
+        return (true);
+    }
+    else
+    {
+        age.style.borderColor = fieldBorderColor;
+        return false;
+    }
+}
+
 function verifyDetails(s)
 {
     var message = _("#message");
@@ -52,6 +69,8 @@ function verifyDetails(s)
     if (checkName(_("#lastname"), _("#message"), dismiss + "Invalid last name, only alphabetical characters are allowed.")  || s == 1)
         return;
     if (checkEmail(_("#email"), _("#message"), dismiss + "Please provide a valid email address")  || s == 3)
+        return;
+    if (checkAge(_("#age"), _("#message"), dismiss + "Must be 18 or older")  || s == 4)
         return;
     if (message != null)
         _("#personal").removeChild(message);

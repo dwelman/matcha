@@ -6,12 +6,12 @@
     if (!function_exists("connect"))
         file_put_contents("log.txt","Cant find connect function, aborting");
     $pdo = connect();
-    if ($user == "null")
+    if ($user == "")
     {
         die(">>>BREACH<<< : User not logged on!");
     }
     $sql = $pdo->query("USE db_matcha");
-    $stmt = $pdo->prepare("SELECT username, email, name, surname, gender, bio, preference, fame FROM users WHERE username = :username");
+    $stmt = $pdo->prepare("SELECT username, email, name, surname, age, gender, bio, preference, fame FROM users WHERE username = :username");
     $stmt->bindParam(":username", $user);
     $stmt->execute();
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);

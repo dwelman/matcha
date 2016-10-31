@@ -53,7 +53,15 @@
           session_start();
 
           $pdo = connect();
+					$minMatchingInterests = 1;
 	  	    $sql = $pdo->query("USE db_matcha");
+					$stmt = $pdo->prepare("SELECT interest FROM user_interests WHERE user = :user");
+					$stmt->bindParam(":user", $_SESSION["logged_on_user"]);
+					$stmt->execute();
+					while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
+	        {
+							$interests[] = $row["interest"];
+					}
 		      $stmt = $pdo->prepare("SELECT preference FROM users WHERE username = :name");
 		      $stmt->bindParam(':name', $_SESSION["logged_on_user"]);
 		      $stmt->execute();
@@ -72,11 +80,26 @@
           $stmt->execute();
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
 	        {
-              echo '<div class="jumbotron">';
-              echo '<h1>' . $row["name"] . ' ' . $row["surname"] . '</h1>';
-              echo '<p><a class="btn btn-lg btn-primary" href="userProfile.php?user=' . $row["username"] . '" role="button">View profile &raquo;</a>
-            </p>';
-              echo '</div>';
+							$matchingInterests = 0;
+							$stmt2 = $pdo->prepare("SELECT interest FROM user_interests WHERE user = :user");
+							$stmt2->bindParam(":user", $row["username"]);
+							$stmt2->execute();
+							while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC))
+							{
+									foreach ($interests as $interest)
+									{
+											if ($interest === $row2["interest"])
+												$matchingInterests++;
+									}
+							}
+							if ($matchingInterests >= $minMatchingInterests)
+							{
+								echo '<div class="jumbotron">';
+								echo '<h1>' . $row["name"] . ' ' . $row["surname"] . '</h1>';
+								echo '<p><a class="btn btn-lg btn-primary" href="userProfile.php?user=' . $row["username"] . '" role="button">View profile &raquo;</a>
+							</p>';
+								echo '</div>';
+							}
           }
           $pdo = NULL;
       ?>

@@ -20,11 +20,15 @@
     if (!preg_match('/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/', $_POST["email"]))
         die("ERROR : Invalid email");
 
+    $age = intval($_POST['age']);
+    if ($age < 18)
+        die("ERROR : Invalid age");
+
     $_POST['bio'] = htmlspecialchars($_POST['bio']);
     $pdo = connect();
     $sql = $pdo->query("USE db_matcha");
     $stmt = $pdo->prepare("UPDATE `users` SET `bio` = :bio, `gender` = :gender, `preference` = :pref, 
-                            `name` = :name, `surname` = :surname, `email` = :email
+                            `name` = :name, `surname` = :surname, `age` = :age, `email` = :email
                             WHERE username = :username");
     session_start();
     $stmt->bindParam(':username', $_SESSION['logged_on_user']);
@@ -33,5 +37,7 @@
     $stmt->bindParam(':pref', $_POST['preference']);
     $stmt->bindParam(':name', $_POST['name']);
     $stmt->bindParam(':surname', $_POST['surname']);
+    $stmt->bindParam(':age', $age);
     $stmt->bindParam(':email', $_POST['email']);
     $stmt->execute();
+    $pdo = NULL;

@@ -17,6 +17,7 @@
 		email VARCHAR( 128 ) NOT NULL,
 		name VARCHAR( 24 ) NOT NULL,
 		surname VARCHAR ( 24 ) NOT NULL,
+		age INT NOT NULL,
 		gender ENUM( 'M', 'F' ) NOT NULL,
 		bio VARCHAR( 500 ),
 		preference ENUM ( 'M', 'F', 'B' ) NOT NULL DEFAULT 'B',
@@ -40,16 +41,9 @@
 		die ("Error: images table could not be created\n");
 	echo "images table created\n";
 
-	$query = "CREATE TABLE `interests` (
-		interest VARCHAR( 56 ) NOT NULL PRIMARY KEY
-		)";
-	$sql_retval = $pdo->query($query);
-	if (!$sql_retval)
-		die ("Error: interests table could not be created\n");
-	echo "interests table created\n";
-
 	$query = "CREATE TABLE `user_interests` (
-		interest VARCHAR( 56 ) NOT NULL PRIMARY KEY,
+		id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		interest VARCHAR( 56 ) NOT NULL,
 		user VARCHAR( 24 ) NOT NULL
 		)";
 	$sql_retval = $pdo->query($query);

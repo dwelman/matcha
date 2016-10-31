@@ -103,33 +103,30 @@
 					$row = $stmt->fetch(PDO::FETCH_ASSOC);
 					echo '<p>Name: ' . $row["name"] . '</p>';
 					echo '<p>Surname: ' . $row["surname"] . '</p>';
+					echo '<p>Age: ' . $row["age"] . '</p>';
 					echo '<p>Gender: ' . $row["gender"] . '</p>';
 					echo '<p>Preference: ' . $row["preference"] . '</p>';
+					echo '<h3>Interests</h3>'
 				?>
 					
 					<div class="container">
 					</div>
 					<div class="row">
-						<label class="col-md-3 control-label">Interests</label>
-						<div class="col-md-8">
-						<div class="col-xs-4">
-						<div class="alert alert-info alert-dismissable" role="alert">
-							<p class="alert-title">Pernus</p>
-						</div>
-						</div>
-						
-						<div class="col-xs-4">
-						<div class="alert alert-info alert-dismissable" role="alert">
-							<p class="alert-title">Also Pernus</p>
-						</div>
-						</div>
-
-						<div class="col-xs-4">
-						<div class="alert alert-info alert-dismissable" role="alert">
-							<p class="alert-title">Pernus Indeed</p>
-						</div>
-						</div>
-						</div>
+						<?php
+							$sql = $pdo->query("USE db_matcha");
+							$stmt = $pdo->prepare("SELECT interest FROM user_interests WHERE user = :name");
+							$stmt->bindParam(':name', $_GET["user"]);
+							$stmt->execute();
+							while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
+							{
+								echo '<div class="col-xs-4">';
+								echo '<div class="alert alert-info alert-dismissable" role="alert">';
+								echo '<p class="alert-title">' . $row["interest"] . '</p>';
+								echo '</div>';
+								echo '</div>';
+							}
+							$pdo = NULL;
+						?>
 					</div>		
 						</div>
 					</div>
