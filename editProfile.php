@@ -156,9 +156,38 @@
 						</div>
 					</div>
 
+					<div class="form-group">
+						<div class="col-lg-8">
+							<a href="#" data-dismiss="modal" data-toggle="modal" data-target="#interest-modal">Add Interest</a>
+						</div>
+					</div>
+
+
 					<div class="container">
 					</div>
 					<div class="row">
+						<?php
+							include("config/connect.php");
+							session_start();
+
+							$pdo = connect();
+							$sql = $pdo->query("USE db_matcha");
+							$stmt = $pdo->prepare("SELECT interest FROM user_interests WHERE user = :name");
+							$stmt->bindParam(':name', $_SESSION["logged_on_user"]);
+							$stmt->execute();
+							while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
+							{
+								echo '<div class="col-xs-4">';
+								echo '<div class="alert alert-info alert-dismissable" role="alert">';
+								echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" style="color: white;">×</span></button>';
+								echo '<p class="alert-title">' . $row["interest"] . '</p>';
+								echo '</div>';
+								echo '</div>';
+							}
+							$pdo = NULL;
+						?>
+
+						<!--
 						<div class="col-xs-4">
 						<div class="alert alert-info alert-dismissable" role="alert">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" style="color: white;">×</span></button>
@@ -179,6 +208,7 @@
 							<p class="alert-title">Pernus Indeed</p>
 						</div>
 						</div>
+						-->
 					</div>
 
 
@@ -214,6 +244,23 @@
 						echo '<input type="hidden" name="user" value="' . hash("whirlpool", $_SESSION["logged_on_user"]) . '">';
 					?>
 					<button class="btn btn-lg btn-primary btn-block" name="submit" type="submit" value="submit">Change Password</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+		<div class="modal fade" id="interest-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog">
+			<div class="loginmodal-container">
+				<h1 class="loginHead">Change Password</h1><br>
+				<form method="POST" action="src/addInterest.php">
+					<input type="text" name="interest" placeholder="Add an Interest" value="">
+					<?php
+						//FIX THE CRASH FUTURE ME
+						session_start();
+						echo '<input type="hidden" name="user" value="' . $_SESSION["logged_on_user"] . '">';
+					?>
+					<button class="btn btn-lg btn-primary btn-block" name="submit" type="submit" value="submit">Add Interest</button>
 				</form>
 			</div>
 		</div>

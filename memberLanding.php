@@ -48,32 +48,38 @@
     <div class="container">
 
       <!-- Main component for a primary marketing message or call to action -->
-      <div class="jumbotron">
-        <h1>Navbar example</h1>
-        <p>This example is a quick exercise to illustrate how the default, static and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
-        <p>To see the difference between static and fixed top navbars, just scroll.</p>
-        <p>
-          <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs &raquo;</a>
-        </p>
-      </div>
-	  
-	  <div class="jumbotron">
-        <h1>Navbar example</h1>
-        <p>This example is a quick exercise to illustrate how the default, static and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
-        <p>To see the difference between static and fixed top navbars, just scroll.</p>
-        <p>
-          <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs &raquo;</a>
-        </p>
-      </div>
+      <?php
+          include "config/connect.php";
+          session_start();
 
-	  <div class="jumbotron">
-        <h1>Navbar example</h1>
-        <p>This example is a quick exercise to illustrate how the default, static and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
-        <p>To see the difference between static and fixed top navbars, just scroll.</p>
-        <p>
-          <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs &raquo;</a>
-        </p>
-      </div>
+          $pdo = connect();
+	  	    $sql = $pdo->query("USE db_matcha");
+		      $stmt = $pdo->prepare("SELECT preference FROM users WHERE username = :name");
+		      $stmt->bindParam(':name', $_SESSION["logged_on_user"]);
+		      $stmt->execute();
+          $row = $stmt->fetch(PDO::FETCH_ASSOC);
+          if ($row["preference"] == "B")
+          {
+              $stmt = $pdo->prepare("SELECT * FROM users WHERE username != :name");
+              $stmt->bindParam(':name', $_SESSION["logged_on_user"]);
+          }
+          else
+          {
+              $stmt = $pdo->prepare("SELECT * FROM users WHERE gender = :prefer AND username != :name");
+              $stmt->bindParam(':prefer', $row["preference"]);
+              $stmt->bindParam(':name', $_SESSION["logged_on_user"]);
+          }
+          $stmt->execute();
+          while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
+	        {
+              echo '<div class="jumbotron">';
+              echo '<h1>' . $row["name"] . ' ' . $row["surname"] . '</h1>';
+              echo '<p><a class="btn btn-lg btn-primary" href="userProfile.php?user=' . $row["username"] . '" role="button">View profile &raquo;</a>
+            </p>';
+              echo '</div>';
+          }
+          $pdo = NULL;
+      ?>
     </div> <!-- /container -->
 
 	<div class="modal fade" id="change-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
@@ -92,53 +98,7 @@
 			</div>
 		</div>
 	</div>
-	<!--
-	<div class="col-lg-6 col-sm-6">
-    <div class="card hovercard">
-        <div class="card-background">
-            <img class="card-bkimg" alt="" src="http://lorempixel.com/100/100/people/9/">
-        </div>
-        <div class="useravatar">
-            <img alt="" src="http://lorempixel.com/100/100/people/9/">
-        </div>
-        <div class="card-info"> <span class="card-title">Pamela Anderson</span>
 
-        </div>
-    </div>
-    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
-        <div class="btn-group" role="group">
-            <button type="button" id="stars" class="btn btn-primary" href="#tab1" data-toggle="tab"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <div class="hidden-xs">Stars</div>
-            </button>
-        </div>
-        <div class="btn-group" role="group">
-            <button type="button" id="favorites" class="btn btn-default" href="#tab2" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-                <div class="hidden-xs">Favorites</div>
-            </button>
-        </div>
-        <div class="btn-group" role="group">
-            <button type="button" id="following" class="btn btn-default" href="#tab3" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                <div class="hidden-xs">Following</div>
-            </button>
-        </div>
-    </div>
-
-        <div class="well">
-      <div class="tab-content">
-        <div class="tab-pane fade in active" id="tab1">
-          <h3>This is tab 1</h3>
-        </div>
-        <div class="tab-pane fade in" id="tab2">
-          <h3>This is tab 2</h3>
-        </div>
-        <div class="tab-pane fade in" id="tab3">
-          <h3>This is tab 3</h3>
-        </div>
-      </div>
-    </div>
-    
-    </div>
-	-->
 	<?php
 		$ip = $_SERVER['REMOTE_ADDR'];
 		echo $ip;
