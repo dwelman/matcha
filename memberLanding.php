@@ -56,20 +56,19 @@
 
           $pdo = connect();
 
-					print_r($_POST);
 					$minMatchingInterests = intval($_POST["minInter"]);
-					$bUseMatchingInterests = $_POST["useMinInter"];
+					$bUseMatchingInterests = ($_POST["minInter"] == NULL ? false : true);
 
 					$lowerAge = intval($_POST["lowerAge"]);
 					$upperAge = intval($_POST["upperAge"]);
-					$bUseAgeRange = $_POST["useAgeRange"];
+					$bUseAgeRange = (($_POST["lowerAge"] != NULL && $_POST["upperAge"] != NULL) ? true : false);
 
 					$lowerFame = intval($_POST["lowerFame"]);
 					$upperFame = intval($_POST["upperFame"]);
-					$bUseFameRange = $_POST["useFameRange"];
+					$bUseFameRange = (($_POST["lowerFame"] != NULL && $_POST["upperFame"] != NULL) ? true : false);
 
 					$tagString = $_POST["interTags"];
-					$bUseTags = $_POST["useInterTags"];
+					$bUseTags = ($_POST["interTags"] == NULL ? false : true);
 
 					if ($bUseTags == true)
 					{
@@ -109,7 +108,7 @@
 							$stmt2->execute();
 							$userInterests = array();
 							$totalInt = 0;
-							$bCanUseProfile = ($bUseTags ? false : true);
+							$bCanUseProfile = ($bUseTags == true ? false : true);
 							while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC))
 							{
 									foreach ($interests as $interest)
@@ -129,33 +128,25 @@
 									
 									$totalInt++;
 							}
-							if (($matchingInterests >= $minMatchingInterests && $bUseMatchingInterests))
+							if ($matchingInterests >= $minMatchingInterests || !$bUseMatchingInterests)
 							{
 								if ($row["age"] >= $lowerAge && $row["age"] <= $upperAge || !$bUseAgeRange)
 								{
 										if ($row["fame"] >= $lowerFame && $row["fame"] <= $upperFame || !$bUseFameRange)
 										{
-												$profileCard = '<div class="jumbotron">
-														<h1>' . $row["name"] . ' ' . $row["surname"] . '</h1>
-														<p>Fame rating: ' . $row["fame"] . '</p>
-														<p><a class="btn btn-lg btn-primary" href="userProfile.php?user=' . $row["username"] . '" role="button">View profile &raquo;</a></p>
-														</div>';
-												$user = new User($profileCard, $row["age"], $userInterests, $totalInt, $matchingInterests, $row["fame"]);
-												//echo $user;
-												$users[] = $user;
+												if ($bCanUseProfile)
+												{
+													$profileCard = '<div class="jumbotron">
+															<h1>' . $row["name"] . ' ' . $row["surname"] . '</h1>
+															<p>Fame rating: ' . $row["fame"] . '</p>
+															<p><a class="btn btn-lg btn-primary" href="userProfile.php?user=' . $row["username"] . '" role="button">View profile &raquo;</a></p>
+															</div>';
+													$user = new User($profileCard, $row["age"], $userInterests, $totalInt, $matchingInterests, $row["fame"]);
+													//echo $user;
+													$users[] = $user;
+												}
 										}
 								}
-							}
-							else if ($bCanUseProfile)
-							{
-								$profileCard = '<div class="jumbotron">
-														<h1>' . $row["name"] . ' ' . $row["surname"] . '</h1>
-														<p>Fame rating: ' . $row["fame"] . '</p>
-														<p><a class="btn btn-lg btn-primary" href="userProfile.php?user=' . $row["username"] . '" role="button">View profile &raquo;</a></p>
-														</div>';
-												$user = new User($profileCard, $row["age"], $userInterests, $totalInt, $matchingInterests, $row["fame"]);
-												//echo $user;
-												$users[] = $user;
 							}
           }
 					function ageCmp($a, $b)
@@ -246,28 +237,43 @@
 					<h1 class="loginHead">Filters</h1>
 					<h4 class="loginHead">Apply Filters</h4><br>
 					<form class="loginHead" name="filterForm" id="filterForm" method="POST" action="memberLanding.php">
-						<h6 class="loginHead">Age Range</h6><br>
-						<input class="input_box" id="lowerAge" name="lowerAge" type="text" placeholder="Enter a lower age range"><br>
-						<input class="input_box" id="upperAge" name="upperAge" type="text" placeholder="Enter an upper age range"><br>
-						<input type="checkbox" name="useAgeRange" value="true">Use Age Range<br>
-
-						<h6 class="loginHead">Fame Range</h6><br>
-						<input class="input_box" id="lowerFame" name="lowerFame" type="text" placeholder="Enter a lower fame range"><br>
-						<input class="input_box" id="upperFame" name="upperFame" type="text" placeholder="Enter an upper fame range"><br>
-						<input type="checkbox" name="useFameRange" value="true">Use Fame Range<br>
-
-						<h6 class="loginHead">Minimum amount of common interests</h6><br>
-						<input class="input_box" id="minInter" name="minInter" type="text" placeholder="Minimum common interests"><br>
-						<input type="checkbox" name="useMinInter" value="true">Use Minimum Interests<br>
-
-						<h6 class="loginHead">Filter by interest tags</h6><br>
-						<input class="input_box" id="interTags" name="interTags" type="text" placeholder="Interest tags, sperate with '#'"><br>
-						<input type="checkbox" name="useInterTags" value="true">Use Interest Tags<br>
-					
-						<label>Sort by</label><br>
-						<input name="sortBy" type="radio" value="F">Fame Rating &bull;  
-						<input name="sortBy" type="radio" value="A">Age &bull; 
-						<input name="sortBy" type="radio" value="I">Common Interests<br><br>
+						<h5 class="loginHead">Age Range</h5>
+						<?php
+							echo '<input class="input_box" id="lowerAge" name="lowerAge" type="text" placeholder="Enter a lower age range" value="';
+							echo $_POST["lowerAge"];
+							echo '"><br>';
+							echo '<input class="input_box" id="upperAge" name="upperAge" type="text" placeholder="Enter an upper age range" value="';
+							echo $_POST["upperAge"];
+							echo '"><br>';
+							echo '<h5 class="loginHead">Fame Range</h5>';
+							echo '<input class="input_box" id="lowerFame" name="lowerFame" type="text" placeholder="Enter a lower fame range" value="';
+							echo $_POST["lowerFame"];
+							echo '"><br>';
+							echo '<input class="input_box" id="upperFame" name="upperFame" type="text" placeholder="Enter a upper fame range" value="';
+							echo $_POST["upperFame"];
+							echo '"><br>';
+							echo '<h5 class="loginHead">Minimum amount of common interests</h5>';
+							echo '<input class="input_box" id="minInter" name="minInter" type="text" placeholder="Minimum common interests" value="';
+							echo $_POST["minInter"];
+							echo '"><br>';
+							echo '<h5 class="loginHead">Filter by interest tags</h5>';
+							echo '<input class="input_box" id="interTags" name="interTags" type="text" placeholder="Interest tags, sperate with #" value="';
+							echo $_POST["interTags"];
+							echo '"><br>';
+							echo '<label>Sort by</label><br>';
+							echo '<input name="sortBy" type="radio" value="F"';
+							if ($_POST["sortBy"] === F)
+								echo "checked";
+							echo '>Fame Rating &bull;';
+							echo '<input name="sortBy" type="radio" value="A"';
+							if ($_POST["sortBy"] === A)
+								echo "checked";
+							echo '>Age &bull;';
+							echo '<input name="sortBy" type="radio" value="I"';
+							if ($_POST["sortBy"] === I)
+								echo "checked";
+							echo '>Common Interests<br><br>';
+						?>
 						<input type="submit" name="submit" class="login loginmodal-submit" value="Apply">
 						</form>
 
