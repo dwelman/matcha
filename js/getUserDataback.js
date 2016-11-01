@@ -5,20 +5,27 @@ function getUserData()
     $(document).ready(function()
     {
         // When id with Action is clicked
-        $.getJSON('src/getUserData.php', function(data)
-        {
-            setValues(data[0]);
-        });
+            $.getJSON('src/getUserData.php', function(data)
+            {
+                setValues(data[0]);
+            });
     });
+}
+
+function updateData()
+{
+    getUserData();
 }
 
 function getImages()
 {
     $(document).ready(function()
     {
+        // When id with Action is clicked
         $.getJSON('src/imageJson.php', function(data)
         {
             console.log(data);
+            //setTimeout(setImages, 1000, data);
             setImages(data);
         });
     });
@@ -56,14 +63,11 @@ function setImages(data)
     var i = 0;
     var imgC = 1;
     var id;
-    $("#profile_pic").attr("src", "site_images/ppic.jpg");
-    $("#modalsrc").attr("src", "site_images/ppic.jpg");
     while (i < data.length)
     {
         if (data[i].is_main == "Y")
         {
             $("#profile_pic").attr("src", data[i].image_path);
-            _("#profile_pic").setAttribute("onclick", "setModal('" + data[i].image_path + "', '" + data[i].image_id + "')");
         }
         else
         {
@@ -87,7 +91,6 @@ function setImages(data)
 
 function setValues(data)
 {
-    console.log(data);
     $("#firstname").val(data.name);
     $("#lastname").val(data.surname);
     $("#email").val(data.email);
@@ -114,7 +117,6 @@ function setValues(data)
     $("#bio").val(data.bio);
     $("#age").val(data.age);
     getImages();
-    getInterests();
 }
 
 function updateProfile()

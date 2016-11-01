@@ -50,7 +50,9 @@
 			<!-- left column -->
 			<div class="col-md-4 col-sm-6 col-xs-12">
 				<div class="text-center">
+					<a href="#" class="thumbnail" data-toggle="modal" data-target="#modalimg">
 					<img id="profile_pic" src="site_images/ppic.jpg" class="avatar img-circle img-thumbnail" alt="avatar">
+						</a>
 					<h6 id="img_stat">Upload a photo...</h6>
 					<form id="image_upload_form" enctype="multipart/form-data" method="post">
 						<input type="file" class="text-center center-block well well-sm" id="image1">
@@ -87,6 +89,7 @@
 							<div class="modal-content">
 								<div class="modal-body">
 									<img id="modalsrc" src="" class="img-responsive">
+									<button id="delete" type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#modalimg">Delete</button>
 								</div>
 							</div>
 						</div>
@@ -170,15 +173,14 @@
 							<input class="form-control" value="" type="text" id="interest" onfocus="" maxlength="24">
 						</div>
 					</div>
-
-
 					<br>
-
-
 					<div class="container">
 					</div>
-					<div class="row">
+					<div id="interest_div" class="row">
+
+						<div id="place"></div>
 						<?php
+/*
 							include("config/connect.php");
 							session_start();
 
@@ -200,7 +202,7 @@
 								echo '</div>';
 							}
 							$pdo = NULL;
-						?>	
+*/						?>
 
 						<!--
 						<div class="col-xs-4">

@@ -39,6 +39,7 @@ function progressHandler(event)
 
 function completeHandler(event)
 {
+	getUserData();
    _("#status").innerHTML = event.target.responseText;
    _("#progressBar").value = 0;
 }

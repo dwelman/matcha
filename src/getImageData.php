@@ -18,8 +18,4 @@
         file_put_contents("log.txt", print_r($data, true));
         return ($data);
     }
-   // session_start();
-  //  $user = $_SESSION['logged_on_user'];
-   // $user = "deandt";
-  //  getImageData($user);
 ?>

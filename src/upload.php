@@ -8,9 +8,8 @@ function getImageName()
 	return $name;
 }
 
-function uploadUserImage($over_id, $user)
+function uploadUserImage($user, $pp)
 {
-
     $name = $_FILES['user']['name'];
 	$tmpLoc = $_FILES['user']['tmp_name'];
 	$type = $_FILES['user']['type'];
@@ -34,7 +33,7 @@ function uploadUserImage($over_id, $user)
 	}
 	if(move_uploaded_file($tmpLoc, $path))
 	{
-		addImageDb($path, $newName, $user, "N");
+		addImageDb($path, $newName, $user, $pp);
 	}
    	else
 	{
@@ -46,7 +45,11 @@ function uploadUserImage($over_id, $user)
 	$user = $_SESSION['logged_on_user'];	
 	if ($user == "")
 		exit;
-    //$images = getImageData($user);
+    $images = getImageData($user);
+    if (count($images) == 0)
+        $pp = "Y";
+    else
+        $pp = "N";
     if (count($images) >= 5)
     {
         echo "Image limit reached, aborting";
@@ -54,12 +57,11 @@ function uploadUserImage($over_id, $user)
     }
 	if (file_exists('../images') == false)
 	{
-		echo "Directory not made, creating";
 		mkdir('../images');
 	}
 	if (isset($_FILES['user']))
 	{
-		uploadUserImage($over, $user);	
+		uploadUserImage($user, $pp);
 	}
 	else
 	{

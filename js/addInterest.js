@@ -15,13 +15,74 @@ function checkInterest(name, output, message)
     }
 }
 
-function	getInterests()
+function getInterests()
 {
-	location.reload();
-	$(document).ready(function()
-	{
-        //document.getElementById('#interest_frame').contentWindow.location.reload();
-	});
+    $(document).ready(function()
+    {
+        $.getJSON('src/getInterests.php', function(data)
+        {
+            setInterests(data);
+        });
+    });
+}
+
+//<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" style="color: white;">×</span></button>
+
+function setInterests(data)
+{
+    var i = 0;
+    var parent = _("#interest_div");
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+    if (!data)
+        return;
+    while (i < data.length)
+    {
+        var cont = document.createElement("div");
+        var alert = document.createElement("div");
+        var p = document.createElement("p");
+        var button = document.createElement("button");
+
+        button.setAttribute("class", "close");
+        button.setAttribute("type", "button");
+        button.setAttribute("aria-label", "Close");
+        button.setAttribute("data-dismiss", "alert");
+        button.setAttribute("onclick", "deleteInterest('" + data[i] + "')");
+
+        button.innerHTML = "×";
+
+        alert.setAttribute("class", "alert alert-info alert-dismissable");
+        alert.setAttribute("role", "alert");
+
+        p.setAttribute("class", "alert-title");
+        p.setAttribute("id", "p" + i.toString());
+        p.innerHTML = data[i];
+        cont.setAttribute("class", "col-xs-4");
+
+        alert.appendChild(button);
+        alert.appendChild(p);
+        cont.appendChild(alert);
+        parent.insertBefore(cont, _("#interest_div").childNodes[0]);
+        i++;
+    }
+}
+
+function	deleteInterest(interest)
+{
+    data = {};
+    data.interest = interest;
+    console.log("interest", interest);
+    $.ajax({
+        url: "src/addInterest.php",
+        data: data,
+        type: 'post',
+        success: function(data)
+        {
+            getInterests();
+            $("#interest").val("");
+        }
+    });
 }
 
 function	addInterest()
@@ -37,6 +98,8 @@ function	addInterest()
         success: function(data)
         {
             getInterests();
+            $("#interest").val("");
+
         }
     });
 }

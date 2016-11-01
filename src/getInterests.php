@@ -9,10 +9,10 @@
         die(">>>BREACH<<< : User not logged on!");
     }
     $sql = $pdo->query("USE db_matcha");
-    $stmt = $pdo->prepare("SELECT username, email, name, surname, gender, bio, preference, fame FROM users WHERE username = :username");
+    $stmt = $pdo->prepare("SELECT interest FROM user_interests WHERE user = :username");
     $stmt->bindParam(":username", $user);
     $stmt->execute();
-	while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
+	while ($row = $stmt->fetch(PDO::FETCH_COLUMN))
 	{
 		$data[] = $row;
 	}
