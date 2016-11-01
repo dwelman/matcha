@@ -74,6 +74,7 @@
 			$profile = $stmt->fetch(PDO::FETCH_COLUMN);
 			echo $row["username"];
 		?>'s Profile</h1>
+		<button>Like</button>
 		<div id="row" class="row">
 			<!-- left column -->
 				<div class="text-center">

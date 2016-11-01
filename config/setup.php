@@ -22,7 +22,8 @@
 		bio VARCHAR( 500 ),
 		preference ENUM ( 'M', 'F', 'B' ) NOT NULL DEFAULT 'B',
 		date_created TIMESTAMP NOT NULL,
-		fame INT NOT NULL DEFAULT 0
+		fame INT NOT NULL DEFAULT 0,
+		last_online TIMESTAMP NOT NULL,
 		)";
 	$sql_retval = $pdo->query($query);
 
@@ -50,6 +51,48 @@
 	if (!$sql_retval)
 		die ("Error: user_interests table could not be created\n");
 	echo "user_interests table created\n";
+
+	$query = "CREATE TABLE `likes` (
+		id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		user VARCHAR( 24 ) NOT NULL,
+		liked_user VARCHAR( 24 ) NOT NULL
+		)";
+	$sql_retval = $pdo->query($query);
+	if (!$sql_retval)
+		die ("Error: likes table could not be created\n");
+	echo "likes table created\n";
+
+	$query = "CREATE TABLE `blocks` (
+		id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		user VARCHAR( 24 ) NOT NULL,
+		blocked_user VARCHAR( 24 ) NOT NULL
+		)";
+	$sql_retval = $pdo->query($query);
+	if (!$sql_retval)
+		die ("Error: blocks table could not be created\n");
+	echo "blocks table created\n";
+
+	$query = "CREATE TABLE `reports` (
+		id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		user VARCHAR( 24 ) NOT NULL,
+		reported_user VARCHAR( 24 ) NOT NULL,
+		reason VARCHAR( 500 )
+		)";
+	$sql_retval = $pdo->query($query);
+	if (!$sql_retval)
+		die ("Error: reports table could not be created\n");
+	echo "reports table created\n";
+
+	$query = "CREATE TABLE `notifications` (
+		id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		user VARCHAR( 24 ) NOT NULL,
+		date_created TIMESTAMP NOT NULL,
+		message VARCHAR( 500 )
+		)";
+	$sql_retval = $pdo->query($query);
+	if (!$sql_retval)
+		die ("Error: notifications table could not be created\n");
+	echo "notification table created\n";
 
 	//Create directories
 	shell_exec("rm -rf ../images");
