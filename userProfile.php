@@ -62,38 +62,38 @@
 				return ;
 			}
 			$row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+			$stmt = $pdo->prepare("SELECT image_path FROM images WHERE user = :name AND is_main = 'N'");
+			$stmt->bindParam(':name', $_GET["user"]);
+			$stmt->execute();
+			while ($img = $stmt->fetch(PDO::FETCH_COLUMN))
+				$imgs[] = $img;
+			$stmt = $pdo->prepare("SELECT image_path FROM images WHERE user = :name AND is_main = 'Y'");
+			$stmt->bindParam(':name', $_GET["user"]);
+			$stmt->execute();
+			$profile = $stmt->fetch(PDO::FETCH_COLUMN);
 			echo $row["username"];
 		?>'s Profile</h1>
-
 		<div id="row" class="row">
 			<!-- left column -->
 				<div class="text-center">
-					<img id="profile_pic" src="site_images/ppic.jpg" class="avatar img-circle img-thumbnail" alt="avatar">
+					<a data-toggle='modal' data-target='#modalimg'>
+					<img id="profile_pic" src="<?php echo $profile?>" class="avatar img-circle img-thumbnail"
+						 alt="avatar" style="width: 50%" onclick="<?php echo "setModal('" . $profile . "', 0)";?>">
+						</a>
 				</div>
 				<br>
-
 				<div class="row">
-					<div class="col-xs-6 col-md-3">
-						<a href="#" class="thumbnail">
-							<img src="http://lorempixel.com/200/200/people/8/" alt="">
-						</a>
-					</div>
-					<div class="col-xs-6 col-md-3">
-						<a href="#" class="thumbnail">
-							<img src="http://lorempixel.com/200/200/people/5/" alt="">
-						</a>
-					</div>
-					<div class="col-xs-6 col-md-3">
-						<a href="#" class="thumbnail">
-							<img src="http://lorempixel.com/200/200/people/1/" alt="">
-						</a>
-					</div>
-					<div class="col-xs-6 col-md-3">
-						<a href="#" class="thumbnail">
-							<img src="http://lorempixel.com/200/200/people/2/" alt="">
-						</a>
-					</div>
-
+					<?php
+						foreach ($imgs as $img)
+						{
+							echo "<div class='col-xs-6 col-md-3'>" .
+								"<a class='thumbnail' data-toggle='modal' data-target='#modalimg'" .
+								"onclick= 'setModal(\"$img\", 0)'>" .
+								"<img src='$img' alt=''>" .
+								"</a></div>";
+						}
+					?>
 				</div>
 
 				<h3 id="pi">Personal info</h3>
@@ -155,8 +155,15 @@
 			</div>
 		</div>
 	</div>
+	<div id="modalimg" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<img id="modalsrc" src="" class="img-responsive">
+				</div>
+			</div>
+		</div>
+	</div>
 
-	<script type="text/javascript" src="js/profileCheck.js"></script>
 	<script type="text/javascript" src="js/getUserData.js"></script>
-	<script type="text/javascript" src="js/upload.js"></script>
 </html>

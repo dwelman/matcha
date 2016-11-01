@@ -42,7 +42,9 @@ function deleteImage(img)
 function setModal(img, id)
 {
     $("#modalsrc").attr("src", img);
-    _("#delete").setAttribute("onclick", "deleteImage('" + id + "')");
+
+    if (id)
+        _("#delete").setAttribute("onclick", "deleteImage('" + id + "')");
 }
 
 function setImages(data)

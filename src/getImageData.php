@@ -15,7 +15,6 @@
         $stmt->bindParam(":username", $user);
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        file_put_contents("log.txt", print_r($data, true));
         return ($data);
     }
 ?>

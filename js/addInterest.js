@@ -22,11 +22,10 @@ function getInterests()
         $.getJSON('src/getInterests.php', function(data)
         {
             setInterests(data);
+            console.log("data", data);
         });
     });
 }
-
-//<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" style="color: white;">×</span></button>
 
 function setInterests(data)
 {
@@ -35,6 +34,8 @@ function setInterests(data)
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
     }
+    console.log("data", data);
+
     if (!data)
         return;
     while (i < data.length)
@@ -64,8 +65,10 @@ function setInterests(data)
         alert.appendChild(p);
         cont.appendChild(alert);
         parent.insertBefore(cont, _("#interest_div").childNodes[0]);
+        //$("#interest").append(document.createElement("br"));
         i++;
     }
+    console.log("parent", parent.childNodes);
 }
 
 function	deleteInterest(interest)
