@@ -50,6 +50,9 @@
 
 			$pdo = connect();
 			$sql = $pdo->query("USE db_matcha");
+			$stmt = $pdo->prepare("UPDATE users SET fame = fame + 1 WHERE username = :name");
+			$stmt->bindParam(':name', $_GET["user"]);
+			$stmt->execute();
 			$stmt = $pdo->prepare("SELECT username FROM users WHERE username = :name");
 			$stmt->bindParam(':name', $_GET["user"]);
 			$stmt->execute();

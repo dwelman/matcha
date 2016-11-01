@@ -36,6 +36,7 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li><a href="editProfile.php">Profile</a></li>
+						<li><a href="#" data-toggle="modal" data-target="#filter-modal">Filters</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#" data-dismiss="modal" data-toggle="modal" data-target="#change-modal">Change Password</a></li>
@@ -50,10 +51,32 @@
       <!-- Main component for a primary marketing message or call to action -->
       <?php
           include "config/connect.php";
+					include "classes/User.class.php";
           session_start();
 
           $pdo = connect();
-					$minMatchingInterests = 1;
+
+					print_r($_POST);
+					$minMatchingInterests = intval($_POST["minInter"]);
+					$bUseMatchingInterests = $_POST["useMinInter"];
+
+					$lowerAge = intval($_POST["lowerAge"]);
+					$upperAge = intval($_POST["upperAge"]);
+					$bUseAgeRange = $_POST["useAgeRange"];
+
+					$lowerFame = intval($_POST["lowerFame"]);
+					$upperFame = intval($_POST["upperFame"]);
+					$bUseFameRange = $_POST["useFameRange"];
+
+					$tagString = $_POST["interTags"];
+					$bUseTags = $_POST["useInterTags"];
+
+					if ($bUseTags == true)
+					{
+							$tagArray = explode("#", $tagString);
+					}
+
+					$users = array();
 	  	    $sql = $pdo->query("USE db_matcha");
 					$stmt = $pdo->prepare("SELECT interest FROM user_interests WHERE user = :user");
 					$stmt->bindParam(":user", $_SESSION["logged_on_user"]);
@@ -84,23 +107,111 @@
 							$stmt2 = $pdo->prepare("SELECT interest FROM user_interests WHERE user = :user");
 							$stmt2->bindParam(":user", $row["username"]);
 							$stmt2->execute();
+							$userInterests = array();
+							$totalInt = 0;
+							$bCanUseProfile = ($bUseTags ? false : true);
 							while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC))
 							{
 									foreach ($interests as $interest)
 									{
-											if ($interest === $row2["interest"])
+											if (strtolower($interest) === strtolower($row2["interest"]))
 												$matchingInterests++;
+											if (!$bCanUseProfile)
+											{
+													foreach ($tagArray as $tag)
+													{
+															if (trim(strtolower($tag)) === strtolower($row2["interest"]))
+																$bCanUseProfile = true;
+													}
+											}
 									}
+									$userInterests[] = $row2["interest"];
+									
+									$totalInt++;
 							}
-							if ($matchingInterests >= $minMatchingInterests)
+							if (($matchingInterests >= $minMatchingInterests && $bUseMatchingInterests))
 							{
-								echo '<div class="jumbotron">';
-								echo '<h1>' . $row["name"] . ' ' . $row["surname"] . '</h1>';
-								echo '<p><a class="btn btn-lg btn-primary" href="userProfile.php?user=' . $row["username"] . '" role="button">View profile &raquo;</a>
-							</p>';
-								echo '</div>';
+								if ($row["age"] >= $lowerAge && $row["age"] <= $upperAge || !$bUseAgeRange)
+								{
+										if ($row["fame"] >= $lowerFame && $row["fame"] <= $upperFame || !$bUseFameRange)
+										{
+												$profileCard = '<div class="jumbotron">
+														<h1>' . $row["name"] . ' ' . $row["surname"] . '</h1>
+														<p>Fame rating: ' . $row["fame"] . '</p>
+														<p><a class="btn btn-lg btn-primary" href="userProfile.php?user=' . $row["username"] . '" role="button">View profile &raquo;</a></p>
+														</div>';
+												$user = new User($profileCard, $row["age"], $userInterests, $totalInt, $matchingInterests, $row["fame"]);
+												//echo $user;
+												$users[] = $user;
+										}
+								}
+							}
+							else if ($bCanUseProfile)
+							{
+								$profileCard = '<div class="jumbotron">
+														<h1>' . $row["name"] . ' ' . $row["surname"] . '</h1>
+														<p>Fame rating: ' . $row["fame"] . '</p>
+														<p><a class="btn btn-lg btn-primary" href="userProfile.php?user=' . $row["username"] . '" role="button">View profile &raquo;</a></p>
+														</div>';
+												$user = new User($profileCard, $row["age"], $userInterests, $totalInt, $matchingInterests, $row["fame"]);
+												//echo $user;
+												$users[] = $user;
 							}
           }
+					function ageCmp($a, $b)
+					{
+							if ($a->age > $b->age)
+								return (1);
+							else if ($a->age < $b->age)
+								return (-1);
+							else
+								return (0);
+					}
+
+					function fameCmp($a, $b)
+					{
+							if ($a->fame < $b->fame)
+								return (1);
+							else if ($a->fame > $b->fame)
+								return (-1);
+							else
+								return (0);
+					}
+
+					function interCmp($a, $b)
+					{
+							if ($a->matchingInterests < $b->matchingInterests)
+								return (1);
+							else if ($a->matchingInterests > $b->matchingInterests)
+								return (-1);
+							else
+								return (0);
+					}
+
+					if ($_POST["sortBy"] === "A")
+					{
+							usort($users, ageCmp);
+							foreach ($users as $user)
+							{
+								echo $user->profileCard;
+							}
+					}
+					else if ($_POST["sortBy"] === "F")
+					{
+							usort($users, fameCmp);
+							foreach ($users as $user)
+							{
+								echo $user->profileCard;
+							}
+					}
+					else
+					{
+							usort($users, interCmp);
+							foreach ($users as $user)
+							{
+								echo $user->profileCard;
+							}
+					}
           $pdo = NULL;
       ?>
     </div> <!-- /container -->
@@ -128,6 +239,41 @@
 		echo "<br>";
 		echo gethostbyaddr($ip);
 	?>
+
+		<div class="modal fade" id="filter-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+			<div class="modal-dialog">
+				<div class="loginmodal-container">
+					<h1 class="loginHead">Filters</h1>
+					<h4 class="loginHead">Apply Filters</h4><br>
+					<form class="loginHead" name="filterForm" id="filterForm" method="POST" action="memberLanding.php">
+						<h6 class="loginHead">Age Range</h6><br>
+						<input class="input_box" id="lowerAge" name="lowerAge" type="text" placeholder="Enter a lower age range"><br>
+						<input class="input_box" id="upperAge" name="upperAge" type="text" placeholder="Enter an upper age range"><br>
+						<input type="checkbox" name="useAgeRange" value="true">Use Age Range<br>
+
+						<h6 class="loginHead">Fame Range</h6><br>
+						<input class="input_box" id="lowerFame" name="lowerFame" type="text" placeholder="Enter a lower fame range"><br>
+						<input class="input_box" id="upperFame" name="upperFame" type="text" placeholder="Enter an upper fame range"><br>
+						<input type="checkbox" name="useFameRange" value="true">Use Fame Range<br>
+
+						<h6 class="loginHead">Minimum amount of common interests</h6><br>
+						<input class="input_box" id="minInter" name="minInter" type="text" placeholder="Minimum common interests"><br>
+						<input type="checkbox" name="useMinInter" value="true">Use Minimum Interests<br>
+
+						<h6 class="loginHead">Filter by interest tags</h6><br>
+						<input class="input_box" id="interTags" name="interTags" type="text" placeholder="Interest tags, sperate with '#'"><br>
+						<input type="checkbox" name="useInterTags" value="true">Use Interest Tags<br>
+					
+						<label>Sort by</label><br>
+						<input name="sortBy" type="radio" value="F">Fame Rating &bull;  
+						<input name="sortBy" type="radio" value="A">Age &bull; 
+						<input name="sortBy" type="radio" value="I">Common Interests<br><br>
+						<input type="submit" name="submit" class="login loginmodal-submit" value="Apply">
+						</form>
+
+				</div>
+			</div>
+		</div>
 
 	</body>
 </html>
