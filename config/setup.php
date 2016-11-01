@@ -23,7 +23,7 @@
 		preference ENUM ( 'M', 'F', 'B' ) NOT NULL DEFAULT 'B',
 		date_created TIMESTAMP NOT NULL,
 		fame INT NOT NULL DEFAULT 0,
-		last_online TIMESTAMP NOT NULL,
+		last_online TIMESTAMP NOT NULL
 		)";
 	$sql_retval = $pdo->query($query);
 
