@@ -6,8 +6,10 @@
 	{
 		$pdo = connect();
 		$sql = $pdo->query("USE db_matcha");
-		$stmt = $pdo->prepare("UPDATE last_online FROM users WHERE username = :name");
+		$stmt = $pdo->prepare("UPDATE users 
+				SET last_online = NOW()");
 		$stmt->bindParam(':name', $_SESSION["logged_on_user"]);
 		$stmt->execute();
 	}
+	return ;
 ?>

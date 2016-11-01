@@ -106,6 +106,14 @@
 							$stmt2 = $pdo->prepare("SELECT interest FROM user_interests WHERE user = :user");
 							$stmt2->bindParam(":user", $row["username"]);
 							$stmt2->execute();
+
+							$stmt3 = $pdo->prepare("SELECT * FROM blocks WHERE (user = :user AND blocked_user = :blocked_user)
+									OR (user = :blocked_user AND blocked_user = :user)");
+							$stmt3->bindParam(":blocked_user", $row["username"]);
+							$stmt3->bindParam(":user", $_SESSION["logged_on_user"]);
+							$stmt3->execute();
+							if ($stmt->rowCount() > 0)
+								continue ;
 							$userInterests = array();
 							$totalInt = 0;
 							$bCanUseProfile = ($bUseTags == true ? false : true);
@@ -182,26 +190,18 @@
 					if ($_POST["sortBy"] === "A")
 					{
 							usort($users, ageCmp);
-							foreach ($users as $user)
-							{
-								echo $user->profileCard;
-							}
 					}
 					else if ($_POST["sortBy"] === "F")
 					{
 							usort($users, fameCmp);
-							foreach ($users as $user)
-							{
-								echo $user->profileCard;
-							}
 					}
 					else
 					{
 							usort($users, interCmp);
-							foreach ($users as $user)
-							{
-								echo $user->profileCard;
-							}
+					}
+					foreach ($users as $user)
+					{
+						echo $user->profileCard;
 					}
           $pdo = NULL;
       ?>
@@ -280,6 +280,6 @@
 				</div>
 			</div>
 		</div>
-
+		<script src="js/checkOnline.js"></script>
 	</body>
 </html>

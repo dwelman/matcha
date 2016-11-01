@@ -3,4 +3,4 @@ setInterval(
 	{
 		$.get("src/stillAlive.php");
 	}
-, 60000);
+, 5000);

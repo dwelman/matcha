@@ -94,6 +94,18 @@
 		die ("Error: notifications table could not be created\n");
 	echo "notification table created\n";
 
+	$query = "CREATE TABLE `chat` (
+		id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		user VARCHAR( 24 ) NOT NULL,
+		user_to VARCHAR( 24 ) NOT NULL,
+		date_created TIMESTAMP NOT NULL,
+		message VARCHAR( 500 )
+		)";
+	$sql_retval = $pdo->query($query);
+	if (!$sql_retval)
+		die ("Error: chat table could not be created\n");
+	echo "chat table created\n";
+
 	//Create directories
 	shell_exec("rm -rf ../images");
 	mkdir("../images", 0777);
