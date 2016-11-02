@@ -7,6 +7,7 @@
 		<link href="css/bootstrap.min.css" rel="stylesheet">
 		<link href="css/modalLogin.css" rel="stylesheet">
 		<link href="css/style.css" rel="stylesheet">
+		<link href="css/chat.css" rel="stylesheet">
 		<link href="css/cardStyle.css" rel="stylesheet">
 		<script src="js/jquery.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
@@ -39,8 +40,9 @@
 						<li><a href="#" data-toggle="modal" data-target="#filter-modal">Filters</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#" data-dismiss="modal" data-toggle="modal" data-target="#change-modal">Change Password</a></li>
-			<li><a href="index.php">Logout</a></li>
+			  <li><a href="#" data-dismiss="modal" data-toggle="modal" data-target="#chat-modal">Chat</a></li>
+			  <li><a href="#" data-dismiss="modal" data-toggle="modal" data-target="#change-modal">Change Password</a></li>
+			  <li><a href="index.php">Logout</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -280,6 +282,23 @@
 				</div>
 			</div>
 		</div>
-		<script src="js/checkOnline.js"></script>
+
+	<div id="chat-modal" class="modal modal-wide fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">Chat</h4>
+				</div>
+				<div class="modal-body" id="chat">
+				</div>
+				<div class="modal-footer">
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+	<script src="js/checkOnline.js"></script>
+		 <script src="js/getChat.js"></script>
 	</body>
 </html>
