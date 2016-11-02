@@ -21,9 +21,9 @@
 		gender ENUM( 'M', 'F' ) NOT NULL,
 		bio VARCHAR( 500 ),
 		preference ENUM ( 'M', 'F', 'B' ) NOT NULL DEFAULT 'B',
-		date_created TIMESTAMP NOT NULL,
+		date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 		fame INT NOT NULL DEFAULT 0,
-		last_online TIMESTAMP NOT NULL
+		last_online TIMESTAMP DEFAULT NOW()
 		)";
 	$sql_retval = $pdo->query($query);
 
@@ -99,12 +99,24 @@
 		user VARCHAR( 24 ) NOT NULL,
 		user_to VARCHAR( 24 ) NOT NULL,
 		date_created TIMESTAMP NOT NULL,
-		message VARCHAR( 500 )
+		message VARCHAR( 500 ),
+		has_read ENUM ( 'Y', 'N' ) NOT NULL DEFAULT 'N'
 		)";
 	$sql_retval = $pdo->query($query);
 	if (!$sql_retval)
 		die ("Error: chat table could not be created\n");
 	echo "chat table created\n";
+
+	$query = "CREATE TABLE `view_history` (
+		id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		user VARCHAR( 24 ) NOT NULL,
+		user_viewed VARCHAR( 24 ) NOT NULL,
+		time_viewed TIMESTAMP NOT NULL
+		)";
+	$sql_retval = $pdo->query($query);
+	if (!$sql_retval)
+		die ("Error: view_history table could not be created\n");
+	echo "view_history table created\n";
 
 	//Create directories
 	shell_exec("rm -rf ../images");
