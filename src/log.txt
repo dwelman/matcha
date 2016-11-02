@@ -1,0 +1,10 @@
+Array
+(
+    [gender] => M
+    [preference] => F
+    [name] => David
+    [surname] => Welman
+    [email] => dwelman2704@gmail.com
+    [bio] => I like cheese
+    [age] => 19
+)

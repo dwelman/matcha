@@ -209,5 +209,18 @@
 			VALUES ("Cabbage", "male_user3")');
 	$pdo->query('INSERT INTO user_interests (interest, user)
 			VALUES ("Cats", "male_user3")');
+
+	$pdo->query('INSERT INTO images (image_id, image_path, user, is_main)
+			VALUES (1, "TestImages/fem_user1.jpg", "fem_user1", "Y")');
+	$pdo->query('INSERT INTO images (image_id, image_path, user, is_main)
+			VALUES (2, "TestImages/fem_user2.jpg", "fem_user2", "Y")');
+	$pdo->query('INSERT INTO images (image_id, image_path, user, is_main)
+			VALUES (3, "TestImages/fem_user3.jpg", "fem_user3", "Y")');
+	$pdo->query('INSERT INTO images (image_id, image_path, user, is_main)
+			VALUES (4, "TestImages/male_user1.jpeg", "male_user1", "Y")');
+	$pdo->query('INSERT INTO images (image_id, image_path, user, is_main)
+			VALUES (5, "TestImages/male_user2.jpeg", "male_user2", "Y")');
+	$pdo->query('INSERT INTO images (image_id, image_path, user, is_main)
+			VALUES (6, "TestImages/male_user3.jpeg", "male_user3", "Y")');
 	echo "Test profiles made\n";
 ?>

@@ -50,159 +50,159 @@
 
       <!-- Main component for a primary marketing message or call to action -->
       <?php
-          include "config/connect.php";
-					include "classes/User.class.php";
-          session_start();
+        include "config/connect.php";
+		include "classes/User.class.php";
+        session_start();
 
-          $pdo = connect();
+        $pdo = connect();
 
-					$minMatchingInterests = intval($_POST["minInter"]);
-					$bUseMatchingInterests = ($_POST["minInter"] == NULL ? false : true);
+		$minMatchingInterests = intval($_POST["minInter"]);
+		$bUseMatchingInterests = ($_POST["minInter"] == NULL ? false : true);
 
-					$lowerAge = intval($_POST["lowerAge"]);
-					$upperAge = intval($_POST["upperAge"]);
-					$bUseAgeRange = (($_POST["lowerAge"] != NULL && $_POST["upperAge"] != NULL) ? true : false);
+		$lowerAge = intval($_POST["lowerAge"]);
+		$upperAge = intval($_POST["upperAge"]);
+		$bUseAgeRange = (($_POST["lowerAge"] != NULL && $_POST["upperAge"] != NULL) ? true : false);
 
-					$lowerFame = intval($_POST["lowerFame"]);
-					$upperFame = intval($_POST["upperFame"]);
-					$bUseFameRange = (($_POST["lowerFame"] != NULL && $_POST["upperFame"] != NULL) ? true : false);
+		$lowerFame = intval($_POST["lowerFame"]);
+		$upperFame = intval($_POST["upperFame"]);
+		$bUseFameRange = (($_POST["lowerFame"] != NULL && $_POST["upperFame"] != NULL) ? true : false);
 
-					$tagString = $_POST["interTags"];
-					$bUseTags = ($_POST["interTags"] == NULL ? false : true);
+		$tagString = $_POST["interTags"];
+		$bUseTags = ($_POST["interTags"] == NULL ? false : true);
 
-					if ($bUseTags == true)
+		if ($bUseTags == true)
+		{
+			$tagArray = explode("#", $tagString);
+		}
+
+		$users = array();
+		$sql = $pdo->query("USE db_matcha");
+		$stmt = $pdo->prepare("SELECT interest FROM user_interests WHERE user = :user");
+		$stmt->bindParam(":user", $_SESSION["logged_on_user"]);
+		$stmt->execute();
+		while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
+		{
+			$interests[] = $row["interest"];
+		}
+		$stmt = $pdo->prepare("SELECT preference FROM users WHERE username = :name");
+		$stmt->bindParam(':name', $_SESSION["logged_on_user"]);
+		$stmt->execute();
+		$row = $stmt->fetch(PDO::FETCH_ASSOC);
+		if ($row["preference"] == "B")
+		{
+			$stmt = $pdo->prepare("SELECT * FROM users WHERE username != :name");
+			$stmt->bindParam(':name', $_SESSION["logged_on_user"]);
+		}
+		else
+		{
+			$stmt = $pdo->prepare("SELECT * FROM users WHERE gender = :prefer AND username != :name");
+			$stmt->bindParam(':prefer', $row["preference"]);
+			$stmt->bindParam(':name', $_SESSION["logged_on_user"]);
+		}
+		$stmt->execute();
+		while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
+		{
+			$matchingInterests = 0;
+			$stmt2 = $pdo->prepare("SELECT interest FROM user_interests WHERE user = :user");
+			$stmt2->bindParam(":user", $row["username"]);
+			$stmt2->execute();
+
+			$stmt3 = $pdo->prepare("SELECT * FROM blocks WHERE (user = :user AND blocked_user = :blocked_user)
+					OR (user = :blocked_user AND blocked_user = :user)");
+			$stmt3->bindParam(":blocked_user", $row["username"]);
+			$stmt3->bindParam(":user", $_SESSION["logged_on_user"]);
+			$stmt3->execute();
+			if ($stmt3->rowCount() > 0)
+				continue ;
+			$userInterests = array();
+			$totalInt = 0;
+			$bCanUseProfile = ($bUseTags == true ? false : true);
+			while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC))
+			{
+					foreach ($interests as $interest)
 					{
-							$tagArray = explode("#", $tagString);
-					}
-
-					$users = array();
-	  	    $sql = $pdo->query("USE db_matcha");
-					$stmt = $pdo->prepare("SELECT interest FROM user_interests WHERE user = :user");
-					$stmt->bindParam(":user", $_SESSION["logged_on_user"]);
-					$stmt->execute();
-					while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
-	        {
-							$interests[] = $row["interest"];
-					}
-		      $stmt = $pdo->prepare("SELECT preference FROM users WHERE username = :name");
-		      $stmt->bindParam(':name', $_SESSION["logged_on_user"]);
-		      $stmt->execute();
-          $row = $stmt->fetch(PDO::FETCH_ASSOC);
-          if ($row["preference"] == "B")
-          {
-              $stmt = $pdo->prepare("SELECT * FROM users WHERE username != :name");
-              $stmt->bindParam(':name', $_SESSION["logged_on_user"]);
-          }
-          else
-          {
-              $stmt = $pdo->prepare("SELECT * FROM users WHERE gender = :prefer AND username != :name");
-              $stmt->bindParam(':prefer', $row["preference"]);
-              $stmt->bindParam(':name', $_SESSION["logged_on_user"]);
-          }
-          $stmt->execute();
-          while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
-	        {
-							$matchingInterests = 0;
-							$stmt2 = $pdo->prepare("SELECT interest FROM user_interests WHERE user = :user");
-							$stmt2->bindParam(":user", $row["username"]);
-							$stmt2->execute();
-
-							$stmt3 = $pdo->prepare("SELECT * FROM blocks WHERE (user = :user AND blocked_user = :blocked_user)
-									OR (user = :blocked_user AND blocked_user = :user)");
-							$stmt3->bindParam(":blocked_user", $row["username"]);
-							$stmt3->bindParam(":user", $_SESSION["logged_on_user"]);
-							$stmt3->execute();
-							if ($stmt->rowCount() > 0)
-								continue ;
-							$userInterests = array();
-							$totalInt = 0;
-							$bCanUseProfile = ($bUseTags == true ? false : true);
-							while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC))
+							if (strtolower($interest) === strtolower($row2["interest"]))
+								$matchingInterests++;
+							if (!$bCanUseProfile)
 							{
-									foreach ($interests as $interest)
+									foreach ($tagArray as $tag)
 									{
-											if (strtolower($interest) === strtolower($row2["interest"]))
-												$matchingInterests++;
-											if (!$bCanUseProfile)
-											{
-													foreach ($tagArray as $tag)
-													{
-															if (trim(strtolower($tag)) === strtolower($row2["interest"]))
-																$bCanUseProfile = true;
-													}
-											}
+											if (trim(strtolower($tag)) === strtolower($row2["interest"]))
+												$bCanUseProfile = true;
 									}
-									$userInterests[] = $row2["interest"];
-									
-									$totalInt++;
 							}
-							if ($matchingInterests >= $minMatchingInterests || !$bUseMatchingInterests)
-							{
-								if ($row["age"] >= $lowerAge && $row["age"] <= $upperAge || !$bUseAgeRange)
+					}
+					$userInterests[] = $row2["interest"];
+					
+					$totalInt++;
+			}
+			if ($matchingInterests >= $minMatchingInterests || !$bUseMatchingInterests)
+			{
+				if ($row["age"] >= $lowerAge && $row["age"] <= $upperAge || !$bUseAgeRange)
+				{
+						if ($row["fame"] >= $lowerFame && $row["fame"] <= $upperFame || !$bUseFameRange)
+						{
+								if ($bCanUseProfile)
 								{
-										if ($row["fame"] >= $lowerFame && $row["fame"] <= $upperFame || !$bUseFameRange)
-										{
-												if ($bCanUseProfile)
-												{
-													$profileCard = '<div class="jumbotron">
-															<h1>' . $row["name"] . ' ' . $row["surname"] . '</h1>
-															<p>Fame rating: ' . $row["fame"] . '</p>
-															<p><a class="btn btn-lg btn-primary" href="userProfile.php?user=' . $row["username"] . '" role="button">View profile &raquo;</a></p>
-															</div>';
-													$user = new User($profileCard, $row["age"], $userInterests, $totalInt, $matchingInterests, $row["fame"]);
-													//echo $user;
-													$users[] = $user;
-												}
-										}
+									$profileCard = '<div class="jumbotron">
+											<h1>' . $row["name"] . ' ' . $row["surname"] . '</h1>
+											<p>Fame rating: ' . $row["fame"] . '</p>
+											<p><a class="btn btn-lg btn-primary" href="userProfile.php?user=' . $row["username"] . '" role="button">View profile &raquo;</a></p>
+											</div>';
+									$user = new User($profileCard, $row["age"], $userInterests, $totalInt, $matchingInterests, $row["fame"]);
+									//echo $user;
+									$users[] = $user;
 								}
-							}
-          }
-					function ageCmp($a, $b)
-					{
-							if ($a->age > $b->age)
-								return (1);
-							else if ($a->age < $b->age)
-								return (-1);
-							else
-								return (0);
-					}
+						}
+				}
+			}
+		}
+		function ageCmp($a, $b)
+		{
+				if ($a->age > $b->age)
+					return (1);
+				else if ($a->age < $b->age)
+					return (-1);
+				else
+					return (0);
+		}
 
-					function fameCmp($a, $b)
-					{
-							if ($a->fame < $b->fame)
-								return (1);
-							else if ($a->fame > $b->fame)
-								return (-1);
-							else
-								return (0);
-					}
+		function fameCmp($a, $b)
+		{
+				if ($a->fame < $b->fame)
+					return (1);
+				else if ($a->fame > $b->fame)
+					return (-1);
+				else
+					return (0);
+		}
 
-					function interCmp($a, $b)
-					{
-							if ($a->matchingInterests < $b->matchingInterests)
-								return (1);
-							else if ($a->matchingInterests > $b->matchingInterests)
-								return (-1);
-							else
-								return (0);
-					}
+		function interCmp($a, $b)
+		{
+				if ($a->matchingInterests < $b->matchingInterests)
+					return (1);
+				else if ($a->matchingInterests > $b->matchingInterests)
+					return (-1);
+				else
+					return (0);
+		}
 
-					if ($_POST["sortBy"] === "A")
-					{
-							usort($users, ageCmp);
-					}
-					else if ($_POST["sortBy"] === "F")
-					{
-							usort($users, fameCmp);
-					}
-					else
-					{
-							usort($users, interCmp);
-					}
-					foreach ($users as $user)
-					{
-						echo $user->profileCard;
-					}
+		if ($_POST["sortBy"] === "A")
+		{
+				usort($users, ageCmp);
+		}
+		else if ($_POST["sortBy"] === "F")
+		{
+				usort($users, fameCmp);
+		}
+		else
+		{
+				usort($users, interCmp);
+		}
+		foreach ($users as $user)
+		{
+			echo $user->profileCard;
+		}
           $pdo = NULL;
       ?>
     </div> <!-- /container -->
