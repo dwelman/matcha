@@ -41,6 +41,13 @@ body {
   right: 4%;
 }
 
+#setpfp
+{
+  position: absolute;
+  bottom: 5%;
+  left: 4%;
+}
+
 /* Extra markup and styles for table-esque vertical and horizontal centering */
 .site-wrapper {
   display: table;

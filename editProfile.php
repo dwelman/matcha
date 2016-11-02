@@ -90,6 +90,7 @@
 								<div class="modal-body">
 									<img id="modalsrc" src="" class="img-responsive">
 									<button id="delete" type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#modalimg">Delete</button>
+									<button id="setpfp" type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#modalimg">Set as profile pic</button>
 								</div>
 							</div>
 						</div>
@@ -203,7 +204,6 @@
 							}
 							$pdo = NULL;
 */						?>
-
 						<!--
 						<div class="col-xs-4">
 						<div class="alert alert-info alert-dismissable" role="alert">

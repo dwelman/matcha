@@ -39,12 +39,31 @@ function deleteImage(img)
     });
 }
 
+function setPfp(img)
+{
+    data = {};
+    data.image = img;
+    $.ajax({
+        url: "src/changePP.php",
+        data: data,
+        type: 'post',
+        complete : function(data)
+        {
+            getUserData();
+        }
+    });
+}
+
+
 function setModal(img, id)
 {
     $("#modalsrc").attr("src", img);
 
     if (id)
+    {
         _("#delete").setAttribute("onclick", "deleteImage('" + id + "')");
+        _("#setpfp").setAttribute("onclick", "setPfp('" + id + "')");
+    }
 }
 
 function setImages(data)
