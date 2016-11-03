@@ -36,6 +36,7 @@ if ($_SESSION['logged_on_user'] == "")
 				<li><a href="memberLanding.php">Home</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
+				
 				<li><a href="#" data-dismiss="modal" data-toggle="modal" data-target="#change-modal">Change Password</a></li>
 				<li><a href="index.php">Logout</a></li>
 			</ul>
@@ -48,12 +49,10 @@ if ($_SESSION['logged_on_user'] == "")
 		<?php
 		include("config/connect.php");
 		include("src/getImageData.php");
+		session_start();
 
 		$pdo = connect();
 		$sql = $pdo->query("USE db_matcha");
-		$stmt = $pdo->prepare("UPDATE users SET fame = fame + 1 WHERE username = :name");
-		$stmt->bindParam(':name', $_GET["user"]);
-		$stmt->execute();
 		$stmt = $pdo->prepare("SELECT username FROM users WHERE username = :name");
 		$stmt->bindParam(':name', $_GET["user"]);
 		$stmt->execute();
@@ -63,6 +62,33 @@ if ($_SESSION['logged_on_user'] == "")
 			return ;
 		}
 		$row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+		$stmt = $pdo->prepare("SELECT * FROM blocks WHERE (user = :user AND blocked_user = :blocked_user)
+				OR (user = :blocked_user AND blocked_user = :user)");
+		$stmt->bindParam(":blocked_user", $_GET["user"]);
+		$stmt->bindParam(":user", $_SESSION["logged_on_user"]);
+		$stmt->execute();
+		if ($stmt->rowCount() > 0)
+		{
+			header("Location: memberLanding.php");
+			return ;
+		}
+		$stmt = $pdo->prepare("INSERT INTO notifications (user, message, link)
+				VALUES (:user, :message, :link)");
+		$stmt->bindParam(":user", $_GET["user"]);
+		$message = $_SESSION["logged_on_user"] . " has viewed your profile!";
+		$stmt->bindParam(":message", $message);
+		$link = '<a href="userProfile.php?user=' . $_SESSION["logged_on_user"] . '">';
+		$stmt->bindParam(":link", $link);
+		$stmt->execute();
+		$stmt = $pdo->prepare("INSERT INTO view_history (user, user_viewed)
+				VALUES (:user, :user_viewed)");
+		$stmt->bindParam(":user", $_SESSION["logged_on_user"]);
+		$stmt->bindParam(':user_viewed', $_GET["user"]);
+		$stmt->execute();
+		$stmt = $pdo->prepare("UPDATE users SET fame = fame + 1 WHERE username = :name");
+		$stmt->bindParam(':name', $_GET["user"]);
+		$stmt->execute();
 
 		$stmt = $pdo->prepare("SELECT image_path FROM images WHERE user = :name AND is_main = 'N'");
 		$stmt->bindParam(':name', $_GET["user"]);
@@ -74,7 +100,21 @@ if ($_SESSION['logged_on_user'] == "")
 		$stmt->execute();
 		$profile = $stmt->fetch(PDO::FETCH_COLUMN);
 		echo $row["username"];
-		?>'s Profile</h1>
+		?>'s Profile - 
+		<?php
+			$stmt2 = $pdo->prepare("SELECT last_online FROM users WHERE username = :name");
+			$stmt2->bindParam(':name', $_GET["user"]);
+			$stmt2->execute();
+			$row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+			date_default_timezone_set("Africa/Johannesburg");
+			if (time() - strtotime($row2["last_online"]) > 60)
+			{
+				echo "last online " . date("d F H:i", strtotime($row2["last_online"]));
+			}
+			else
+				echo "online ";
+		?>
+		</h1>
 	<div id="row" class="row">
 		<!-- left column -->
 		<div class="text-center">
@@ -94,8 +134,8 @@ if ($_SESSION['logged_on_user'] == "")
 					echo "<a id=\"likebtn\" href=\"#\" class=\"btn btn-lg btn-primary\" onclick=\"likeUser()\">
 					<span class=\"glyphicon glyphicon-thumbs-up\"></span> Like</a>";
 			?>
-
-
+			<a id="blkbtn" data-toggle="modal" data-target="#blockModal" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-ban-circle"></span> Block</a>
+			<a id="blkbtn" data-toggle="modal" data-target="#reportModal" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-bullhorn"></span> Report</a>
 		</div>
 		<br>
 		<div class="row">
@@ -174,6 +214,7 @@ if ($_SESSION['logged_on_user'] == "")
 		</div>
 	</div>
 </div>
+
 <div id="modalimg" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -184,6 +225,42 @@ if ($_SESSION['logged_on_user'] == "")
 	</div>
 </div>
 
+<div class="modal fade" id="blockModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="loginmodal-container">
+			<h1 class="loginHead">Block User</h1><br>
+			<p class="loginHead">Are you sure? If you block this user you will no longer be able to access their profile, and they will not be able to access yours</p>
+			<p class="loginHead">This is permanent</p>
+			<form method="POST" action="src/blockUser.php">
+				<?php
+				session_start();
+				echo '<input type="hidden" name="user" value="' . $_GET["user"] . '">';
+				?>
+				<button class="btn btn-lg btn-primary btn-block" name="submit" type="submit" value="submit">Block</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog">
+			<div class="loginmodal-container">
+				<h1 class="loginHead">Report User</h1><br>
+				<p class="loginHead">Are you sure? Reporting a user will also block them</p>
+				<p class="loginHead">This is permanent</p>
+				<form method="POST" action="src/reportUser.php">
+					<?php
+						session_start();
+						echo '<input type="hidden" name="user" value="' . $_GET["user"] . '">';
+					?>
+					<input type="text" name="report" placeholder="Reason for report">
+					<button class="btn btn-lg btn-primary btn-block" name="submit" type="submit" value="submit">Report</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
 <script type="text/javascript" src="js/getUserData.js"></script>
 <script type="text/javascript" src="js/like.js"></script>
+<script src="js/checkOnline.js"></script>
 </html>

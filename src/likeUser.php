@@ -36,6 +36,29 @@ if ($stmt->rowCount() == 0)
     $stmt = $pdo->prepare("UPDATE users SET fame = fame + 10 WHERE username = :name");
     $stmt->bindParam(':name', $liked);
     $stmt->execute();
+
+    $stmt = $pdo->prepare("SELECT * FROM likes WHERE user = :user AND liked_user = :liked");
+    $stmt->bindParam(':user', $liked);
+    $stmt->bindParam(':liked', $user);
+    $stmt->execute();
+    if ($stmt->rowCount() > 0)
+    {
+         $message = $user . " liked you back! Get chatting!";
+         //Set this link to open up the chat modal instead
+         $link = '<a href="userProfile.php?user=' . $user . '">';
+    }
+    else
+    {
+         $message = "It seems like " . $user . " likes you!";
+          $link = '<a href="userProfile.php?user=' . $user . '">';
+    }
+
+    $stmt = $pdo->prepare("INSERT INTO notifications (user, message, link)
+			VALUES (:user, :message, :link)");
+    $stmt->bindParam(":user", $liked);
+    $stmt->bindParam(":message", $message);
+    $stmt->bindParam(":link", $link);
+    $stmt->execute();
 }
 else
 {
@@ -46,5 +69,13 @@ else
     $sql = $pdo->query("USE db_matcha");
     $stmt = $pdo->prepare("UPDATE users SET fame = fame - 10 WHERE username = :name");
     $stmt->bindParam(':name', $liked);
+    $stmt->execute();
+    $stmt = $pdo->prepare("INSERT INTO notifications (user, message, link)
+			VALUES (:user, :message, :link)");
+    $stmt->bindParam(":user", $liked);
+    $message = "It seems like " . $user . " doesn't like you anymore...";
+    $stmt->bindParam(":message", $message);
+    $link = '<a href="userProfile.php?user=' . $user . '">';
+    $stmt->bindParam(":link", $link);
     $stmt->execute();
 }

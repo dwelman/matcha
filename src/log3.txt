@@ -1,0 +1,4 @@
+Array
+(
+    [like] => male_user1
+)

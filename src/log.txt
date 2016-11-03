@@ -1,0 +1,9 @@
+Array
+(
+    [0] => Array
+        (
+            [user] => fem_user1
+            [liked_user] => male_user1
+        )
+
+)

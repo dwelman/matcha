@@ -269,6 +269,7 @@
 	<script type="text/javascript" src="js/profileCheck.js"></script>
 	<script type="text/javascript" src="js/getUserData.js"></script>
 	<script type="text/javascript" src="js/addInterest.js"></script>
+	<script src="js/checkOnline.js"></script>
 	<script>
 		getUserData();
 	</script>

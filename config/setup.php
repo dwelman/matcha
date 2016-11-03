@@ -87,7 +87,8 @@
 		id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 		user VARCHAR( 24 ) NOT NULL,
 		date_created TIMESTAMP NOT NULL,
-		message VARCHAR( 500 )
+		message VARCHAR( 500 ),
+		link VARCHAR( 64 ) NOT NULL
 		)";
 	$sql_retval = $pdo->query($query);
 	if (!$sql_retval)
