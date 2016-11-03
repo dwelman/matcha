@@ -160,7 +160,6 @@ function sendMessage()
     $("#msgwrap").animate({
         scrollTop: $('#msgwrap')[0].scrollHeight * 10000
     }, 1000);
-    //$('#msgwrap').scrollTop($('#msgwrap').height())
 }
 
 function getUnread(user, chat)
@@ -215,8 +214,6 @@ function setMatches(data)
             $("#matches").append(match);
             getUnread(data[i].username, i);
         }
-       // console.log("unreadTotal", unreadTotal);
-        //  $("#chat_link").html("Chat <span style='color:red'>" + unreadTotal.toString() + "</span>");
         if (setActive)
         {
             activeUsers = data;
@@ -225,7 +222,6 @@ function setMatches(data)
             activeChatUser = data[0].username;
             setActive = false;
         }
-        console.log("AC", activeChat);
         $("#chat" + activeChat.toString()).css("background-color", "#AFBEEE");
     });
 }

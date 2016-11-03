@@ -8,6 +8,7 @@
 	<link href="css/style.css" rel="stylesheet">
 	<link href="css/funkyradio.css" rel="stylesheet">
 	<link href="css/modalLogin.css" rel="stylesheet">
+	<link href="css/chat.css" rel="stylesheet">
 	<link href="css/cardStyle.css" rel="stylesheet">
 	<link href="css/alert.css" rel="stylesheet">
 	<script src="js/jquery.min.js"></script>
@@ -66,7 +67,7 @@ if ($_SESSION['logged_on_user'] == "")
                 </ul>
               </li>
 
-
+				<li><a onclick="chatClick()" href="#" data-dismiss="modal" data-toggle="modal" data-target="#chat-modal" id="chat_link">Chat</a> </li>
 				<li><a href="#" data-dismiss="modal" data-toggle="modal" data-target="#change-modal">Change Password</a></li>
 				<li><a href="index.php">Logout</a></li>
 			</ul>
@@ -291,7 +292,24 @@ if ($_SESSION['logged_on_user'] == "")
 		</div>
 	</div>
 
+<div id="chat-modal" class="modal modal-wide fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title">Chat</h4>
+			</div>
+			<div class="modal-body" id="chat">
+			</div>
+			<div class="modal-footer">
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <script type="text/javascript" src="js/getUserData.js"></script>
 <script type="text/javascript" src="js/like.js"></script>
 <script src="js/checkOnline.js"></script>
+<script src="js/getChat.js"></script>
+
 </html>

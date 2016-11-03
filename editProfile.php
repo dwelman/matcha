@@ -10,6 +10,8 @@
 		<link href="css/modalLogin.css" rel="stylesheet">
 		<link href="css/cardStyle.css" rel="stylesheet">
 		<link href="css/alert.css" rel="stylesheet">
+		<link href="css/chat.css" rel="stylesheet">
+
 		<script src="js/jquery.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -71,8 +73,9 @@
 				?>
                 </ul>
               </li>
+			  <li><a onclick="chatClick()" href="#" data-dismiss="modal" data-toggle="modal" data-target="#chat-modal" id="chat_link">Chat</a> </li>
 
-		  	<li><a href="#" data-dismiss="modal" data-toggle="modal" data-target="#change-modal">Change Password</a></li>
+			  <li><a href="#" data-dismiss="modal" data-toggle="modal" data-target="#change-modal">Change Password</a></li>
 			<li><a href="index.php">Logout</a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -300,6 +303,21 @@
 	</div>
 
 	</div>
+	<div id="chat-modal" class="modal modal-wide fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">Chat</h4>
+				</div>
+				<div class="modal-body" id="chat">
+				</div>
+				<div class="modal-footer">
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
 	</body>
 	<script type="text/javascript" src="js/upload.js"></script>
 	<script type="text/javascript" src="js/profileCheck.js"></script>
@@ -309,4 +327,6 @@
 	<script>
 		getUserData();
 	</script>
+	<script src="js/getChat.js"></script>
+
 </html>
