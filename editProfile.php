@@ -36,6 +36,36 @@
             <li><a href="memberLanding.php">Home</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
+		  	<li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">History <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+				<?php
+					include_once "config/connect.php";
+					include "classes/User.class.php";
+        			session_start();
+
+					$pdo = connect();
+					$sql = $pdo->query("USE db_matcha");
+					$stmt = $pdo->prepare("SELECT user_viewed FROM view_history
+							WHERE user = :user
+							ORDER BY time_viewed DESC
+							LIMIT 10");
+					$stmt->bindParam(":user", $_SESSION["logged_on_user"]);
+					$stmt->execute();
+					while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
+					{
+						$stmt2 = $pdo->prepare("SELECT name, surname FROM users
+								WHERE username = :user");
+						$stmt2->bindParam(":user", $row["user_viewed"]);
+						$stmt2->execute();
+						$row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+						echo '<li><a href="userProfile.php?user=' . $row["user_viewed"] . '">' . $row2["name"] . " " . $row2["surname"] . '</a></li>';
+					}
+					$pdo = NULL;
+				?>
+                </ul>
+              </li>
+
 		  	<li><a href="#" data-dismiss="modal" data-toggle="modal" data-target="#change-modal">Change Password</a></li>
 			<li><a href="index.php">Logout</a></li>
           </ul>
