@@ -69,7 +69,7 @@
 				?>
                 </ul>
               </li>
-			  <li><a href="#" data-dismiss="modal" data-toggle="modal" data-target="#chat-modal">Chat</a></li>
+			  <li><a onclick="chatClick()" href="#" data-dismiss="modal" data-toggle="modal" data-target="#chat-modal" id="chat_link">Chat</a> </li>
 			  <li><a href="#" data-dismiss="modal" data-toggle="modal" data-target="#change-modal">Change Password</a></li>
 			  <li><a href="index.php">Logout</a></li>
           </ul>
