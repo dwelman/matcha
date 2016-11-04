@@ -19,9 +19,3 @@ $stmt->bindParam(':user', $user);
 $stmt->bindParam(':user_to',$_POST['user_to']);
 $stmt->bindParam(':message',$_POST['message']);
 $stmt->execute();
-$stmt = $pdo->prepare("INSERT INTO notifications (user, message)
-                        VALUES (:user, :message)");
-$stmt->bindParam(':user', $user);
-$notmes = "You received a message from " . $_POST['user_to'];
-$stmt->bindParam(':message', $notmes);
-$stmt->execute();

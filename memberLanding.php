@@ -40,6 +40,13 @@
 						<li><a href="#" data-toggle="modal" data-target="#filter-modal">Filters</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
+
+			  <li class="dropdown">
+				  <a id="notiflink" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Notifications <span class="caret"></span></a>
+				  <ul class="dropdown-menu" id="notifdrop">
+				  </ul>
+			  </li>
+
 		  		<li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">History <span class="caret"></span></a>
                 <ul class="dropdown-menu">
@@ -47,7 +54,6 @@
 					include "config/connect.php";
 					include "classes/User.class.php";
         			session_start();
-
 					$pdo = connect();
 					$sql = $pdo->query("USE db_matcha");
 					$stmt = $pdo->prepare("SELECT user_viewed FROM view_history
